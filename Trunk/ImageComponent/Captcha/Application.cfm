@@ -1,0 +1,1 @@
+<cfapplication name="captcah" sessionmanagement="yes" />

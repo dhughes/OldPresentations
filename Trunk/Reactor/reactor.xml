@@ -1,0 +1,45 @@
+<reactor>
+	<config>
+		<project value="Scratch" />
+		<dsn value="Scratch" />
+		<type value="mssql" />
+		<mapping value="/Data" />
+		<mode value="production" />
+	</config>
+
+	<objects>
+		<object name="Customer">
+			<hasOne name="Address">
+				<relate from="addressId" to="addressId" />
+			</hasOne>
+			
+			<hasMany name="Invoice">
+				<relate from="customerId" to="customerId" />
+			</hasMany>
+		</object>
+		
+		<object name="Address">
+			<hasMany name="Customer">
+				<relate from="addressId" to="addressId" />
+			</hasMany>
+		</object>
+		
+		<object name="Invoice">
+			<hasMany name="Product">
+				<link name="InvoiceProduct" />
+			</hasMany>
+		</object>
+		
+		<object name="InvoiceProduct">
+			<hasOne name="Product">
+				<relate from="productId" to="productId" />
+			</hasOne>
+			<hasOne name="Invoice">
+				<relate from="invoiceID" to="invoiceID" />
+			</hasOne>
+		</object>
+		
+		<object name="Product" />
+		
+	</objects>
+</reactor>
