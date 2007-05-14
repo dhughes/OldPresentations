@@ -2,11 +2,11 @@
   <!-- This is your Model-Glue configuration -->
 	<bean id="modelGlueConfiguration" class="modelglue.unity.framework.ModelGlueConfiguration">
 		<!-- Be sure to change reload to false when you go to production! -->
-		<property name="reload"><value>true</value></property>
+		<property name="reload"><value>false</value></property>
 		<!-- Rescaffold is overridden by reload - if reload is false, rescaffold's setting doesn't matter -->
 		<property name="rescaffold"><value>true</value></property>
 		<!-- Be sure to change debug to false when you go to production! -->
-		<property name="debug"><value>true</value></property>
+		<property name="debug"><value>false</value></property>
 		<property name="defaultEvent"><value>page.index</value></property>
 		<property name="reloadPassword"><value>true</value></property>
 		<property name="viewMappings"><value>/Fortune - Advanced/views</value></property>

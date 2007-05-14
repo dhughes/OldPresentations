@@ -1,0 +1,292 @@
+/*
+   Copyright (c) 2006, Paul Kenney
+   All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+   
+#testResults .htmlui img.icon {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#testResults .htmlui table {
+	width: 100%;
+	border: 1px solid #000000;
+}
+
+#testResults .htmlui table caption {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+#testResults .htmlui table caption h3 {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	font-weight: bold;
+	font-size: medium;
+	float: left;
+}
+
+#testResults .htmlui table caption ul {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	list-style-type: none;
+	float: right;
+}
+
+#testResults .htmlui table caption li {
+	float: left;
+	margin: 0px 0px 0px 2px;
+	padding: 0px 0px 0px 0px;
+	border: 0px solid #000000;
+}
+
+/* 10/31/2005 - CSS rule added by Chris Scott to fix formatting in Safari */
+#testResults .htmlui table caption div.clearer {
+	clear: both;
+	margin: 0px 0px 0px 2px;
+	padding: 0px 0px 0px 0px;
+}
+
+#testResults .htmlui table caption li a {
+	text-decoration: none;
+	display: block;
+	margin: 0px 0px 0px 0px;
+	padding: 1px 10px 1px 10px;
+	color: #000000;
+}
+
+#testResults .htmlui table caption li a:hover {
+	background-color: #dddddd;
+	font-weight: bold;
+	color: #000000;
+	border: 1px solid #999999;
+	padding: 0px 9px 0px 9px;
+}
+
+#testResults .htmlui th,
+#testResults .htmlui td {
+	margin: 0px 0px 0px 0px;
+	padding: 3px 10px 3px 10px;
+	text-align: left;
+	vertical-align: baseline;
+}
+
+#testResults .htmlui th {
+	font-size: 0.8em;
+	font-weight: bold;
+	background-color: #cccccc;
+}
+
+#testResults .htmlui td {
+	font-size: 0.7em;
+}
+
+#testResults .htmlui table.allTests tr.testSuite td,
+#testResults .htmlui table.allFailures tr.testSuite td,
+#testResults .htmlui table.allErrors tr.testSuite td {
+	padding: 1em 0px 2px .5em;
+	font-weight: bold;
+	font-size: 0.9em;
+	background-color: #eeeeee;
+	border-bottom: 1px solid #000000;
+}
+
+/***********************************************/
+/* All Tests */
+/***********************************************/
+#testResults .htmlui table.allTests td {
+	border-top: 1px solid #000000;
+}
+
+#testResults .htmlui table.allTests td.testCase {
+	width: 17em;
+}
+
+#testResults .htmlui table.allTests td.testName {
+	width: 25em;
+}
+
+#testResults .htmlui table.allTests td.icon {
+	width: 15px;
+	padding-left: 2px;
+	padding-right: 2px;
+	background-color: #ffffff;
+	text-align: center;
+}
+
+#testResults .htmlui table.allTests td.executionTime {
+	width: 5em;
+	text-align: right;
+}
+
+#testResults .htmlui table.allTests td.status {
+	width: 5em;
+}
+
+#testResults .htmlui table.allTests th.testCase,
+#testResults .htmlui table.allTests th.testName,
+#testResults .htmlui table.allTests th.executionTime,
+#testResults .htmlui table.allTests th.status,
+#testResults .htmlui table.allTests td.testCase,
+#testResults .htmlui table.allTests td.testName,
+#testResults .htmlui table.allTests td.executionTime,
+#testResults .htmlui table.allTests td.icon {
+	border-right: 1px solid #666666;
+}
+
+#testResults .htmlui table.allTests tr.success td {
+	background-color: #ffffff;
+}
+
+#testResults .htmlui table.allTests tr.error td {
+	background-color: #00ccff;
+	color: #000000;
+	font-weight: bold;
+}
+
+#testResults .htmlui table.allTests tr.failure td {
+	background-color: #00ffcc;
+	color: #ff0000;
+	font-weight: bold;
+}
+
+#testResults .htmlui table.allTests tr.failure td.icon,
+#testResults .htmlui table.allTests tr.error td.icon {
+	background-color: #ffffff;
+}
+
+#testResults .htmlui table.allTests tr.failure a,
+#testResults .htmlui table.allTests tr.error a {
+	text-decoration: none;
+	display: block;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	font-weight: normal;
+}
+
+#testResults .htmlui table.allTests tr.failure a:hover,
+#testResults .htmlui table.allTests tr.error a:hover {
+	font-weight: bold;
+}
+
+#testResults .htmlui table.allTests tr.failure a {
+	background-color: #00ffcc;
+	color: #ff0000;
+}
+
+#testResults .htmlui table.allTests tr.error a {
+	background-color: #00ccff;
+	color: #000000;
+}
+
+
+/***********************************************/
+/* All Failures & Errors */
+/***********************************************/
+#testResults .htmlui table.allFailures,
+#testResults .htmlui table.allErrors {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border: 0px solid #000000;
+}
+
+#testResults .htmlui table.allFailures caption,
+#testResults .htmlui table.allErrors caption {
+	margin: 3em 0px 0px 0px;
+}
+
+#testResults .htmlui table.allFailures th,
+#testResults .htmlui table.allFailures td,
+#testResults .htmlui table.allErrors th,
+#testResults .htmlui table.allErrors td {
+	background-color: #ffffff;
+	border-bottom: 1px solid #000000;
+	border-right: 1px solid #000000;
+}
+
+#testResults .htmlui table.allFailures th,
+#testResults .htmlui table.allErrors th {
+	border-left: 1px solid #000000;
+	font-size: 0.8em;
+}
+
+#testResults .htmlui table.allFailures td,
+#testResults .htmlui table.allErrors td {
+	padding-left: 0.5em;
+	font-size: 0.7em;	
+}
+
+#testResults .htmlui table.allFailures tr.testSuite td,
+#testResults .htmlui table.allErrors tr.testSuite td {
+	border-top: 1px solid #000000;
+	border-left: 1px solid #000000;
+}
+
+#testResults .htmlui table.allFailures tr.space td,
+#testResults .htmlui table.allErrors tr.space td {
+	border: 0px solid #000000;
+}
+
+
+/***********************************************/
+/* All Errors */
+/***********************************************/
+#testResults .htmlui table.allErrors tr.stackTrace li {
+	margin-top: 2px;
+}
+
+/***********************************************/
+/* Database Errors */
+/***********************************************/
+#testResults .htmlui table.allErrors tr.where th {
+	vertical-align: top;
+}
+
+#testResults .htmlui table.allErrors tr.where td {
+	padding: 0px 0px 0px 0px;
+}
+
+#testResults .htmlui table.allErrors tr.where table,
+#testResults .htmlui table.allErrors tr.where table th,
+#testResults .htmlui table.allErrors tr.where table td {
+	border: 0px solid #000000;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+#testResults .htmlui table.allErrors tr.where table td {
+	border-top: 1px solid #000000;
+}
+
+#testResults .htmlui table.allErrors tr.where table th {
+	padding: 5px 1em 2px 0.5em;
+}
+
+#testResults .htmlui table.allErrors tr.where table td {
+	padding: 2px 1em 2px 1em;
+}
+
+#testResults .htmlui table.allErrors tr.where table th.param,
+#testResults .htmlui table.allErrors tr.where table th.type,
+#testResults .htmlui table.allErrors tr.where table th.sqlType,
+#testResults .htmlui table.allErrors tr.where table th.class,
+#testResults .htmlui table.allErrors tr.where table td.param,
+#testResults .htmlui table.allErrors tr.where table td.type,
+#testResults .htmlui table.allErrors tr.where table td.sqlType,
+#testResults .htmlui table.allErrors tr.where table td.class {
+	border-right: 1px solid #000000;
+}
+

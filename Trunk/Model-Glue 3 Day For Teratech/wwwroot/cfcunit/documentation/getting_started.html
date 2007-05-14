@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+																															 
+<!--
+   Copyright (c) 2006, Paul Kenney
+   All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Getting Started</title>
+
+	<style type="text/css">
+		@import url(assets/styles.css);
+	</style>
+</head>
+
+<body>
+
+<h2>Getting Started</h2>
+
+<!--
+<div class="feature">
+   	<h3>What is cfcUnit?</h3>
+    
+	<p>
+		cfcUnit is a new member of the xUnit family of unit testing frameworks, written for the CFMX 
+		environment using ColdFusion Components and based entirely on the API of the 
+		<a href="http://www.junit.org">JUnit</a> testing framework. Unit testing is an important part 
+		of the software development cycle and the availability of such tools for ColdFusion developers 
+		leaves much to be desired.  cfcUnit was built to fulfill the needs of a basic regiment of unit 
+		testing while providing the flexibilty to be extended to whatever custom testing solution you 
+		can think of.  For more about unit testing, you can read
+		<a href="what_is_unit_testing.html">Christian Cantrell's description of unit testing and why you would use it</a>.
+	</p>
+</div>
+-->
+
+<div class="story">
+  	<h3>Installation</h3>
+  	
+	<p>
+		Due to the number of bug fixes and enhancements with components provided in CFMX 6.1, prior 
+		versions will not work. If you do have CFMX but not 6.1 or later, it is a free upgrade from 6.0
+		to 6.1.
+	</p>
+  	
+	<p>The cfcUnit distribution is made up of two parts:</p>
+  	
+	<ol>
+  		<li>Core cfcUnit library components (<strong>/org/cfcunit/</strong>)</li>
+  		<li>Test runner application files (<strong>/cfcunit/</strong>)</li>
+	</ol>
+	
+  	<p>To deploy cfcUnit, simply unpack the zip file into the webroot. That's it.</p>
+  	
+	<p>
+		If the cfcUnit files have been successfully deployed, you should be able to go right into your 
+		browser and open a new test runner. This document assumes that the web site is available at 
+		<a href="http://localhost">http://localhost.</a> The test runner application can be found at 
+		<a href="http://localhost/cfcunit">http://localhost/cfcunit</a>. Once you have the test runner 
+		up, you want to test the core framework files to make sure they are all working properly. To 
+		run the tests, enter &quot;cfcunit.tests.AllTests&quot; into the available text field:
+	</p>
+  	
+	<p align="center"><img src="assets/images/testclassdialog.gif" alt="Enter test class" /></p>
+  	
+	<p>
+		There is a text version of the test runner as well as an html version. The Text Runner will tell you if a 
+		test passes or fails, but little else. The HTML Runner on the other hand give much more information about 
+		each test's success or failure. Select one or the other and click the button labeled &quot;Run Test&quot;. 
+		If the tests pass the runner will let you know. If not, then check out the error message and figure out why. 
+		Next, run the same tests using the other tests runner to make sure that they both work (for completeness).
+	</p>
+  	
+	<p>
+		If you've gotten this far, congratulations! cfcUnit is now installed and ready to be used. Now lets write 
+		some tests.
+	</p>
+</div>
+
+</body>
+
+</html>

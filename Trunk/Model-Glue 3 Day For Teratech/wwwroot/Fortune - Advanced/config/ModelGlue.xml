@@ -1,8 +1,10 @@
 <modelglue>
 	<controllers>
-		<controller name="MyController" type="Fortune - Simple MG.controller.Controller">
+		<controller name="MyController" type="Fortune - Advanced.controller.Controller">
 			<message-listener message="NeedCategories" function="DoGetCategories" />
 			<message-listener message="NeedFortune" function="DoGetFortune" />
+			<message-listener message="NeedToLogFortune" function="DoLogFortune" />
+			<message-listener message="NeedRecentFortunes" function="DoGetRecentFortunes" />
 		</controller>
 	</controllers>
   
@@ -15,15 +17,16 @@
 				<result do="view.template" />
 			</results>
 			<views>
-				<include name="body" template="dspIndex.cfm" />
+				<include name="body" template="dspIndex.cfm">
+					<value name="xe.Fortune" value="Fortune.ShowFortune" />
+				</include>
 			</views>
 		</event-handler>
 		
 		<event-handler name="Fortune.ShowFortune">
 			<broadcasts> 
 				<message name="NeedFortune" />
-					<argument name="defaultCategoryId" value="1" />
-				</message>
+				<message name="NeedToLogFortune" />
 			</broadcasts>
 			<results>
 				<result do="view.template" />
@@ -32,12 +35,29 @@
 				<include name="body" template="dspFortune.cfm" />
 			</views>
 		</event-handler>
+		
+		<event-handler name="Fortune.ShowRecentFortunes">
+			<broadcasts> 
+				<message name="NeedRecentFortunes">
+					<argument name="max" value="10" />
+				</message>
+			</broadcasts>
+			<results>
+				<result do="view.template" />
+			</results>
+			<views>
+				<include name="body" template="dspRecentFortunes.cfm" />
+			</views>
+		</event-handler>
 
 		<event-handler name="view.template">
 			<broadcasts />
 			<results />
 			<views>
-				<include name="template" template="dspTemplate.cfm" />
+				<include name="template" template="dspTemplate.cfm">
+					<value name="xe.Home" value="page.index" />
+					<value name="xe.Recent" value="Fortune.ShowRecentFortunes" />
+				</include>
 			</views>
 		</event-handler>
 
