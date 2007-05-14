@@ -11,23 +11,23 @@
 	<target name="RunTests">
 		<cfcunit verbose="true"> 
 			<service hostname="localhost"/> 
-			<testclass name="Fortune - ColdSpring.tests.TestDatasource"/> 
+			<testclass name="Fortune - Data Access.tests.TestDatasource"/> 
 		</cfcunit>
 		<cfcunit verbose="true"> 
 			<service hostname="localhost"/> 
-			<testclass name="Fortune - ColdSpring.tests.TestCategoryGateway"/> 
+			<testclass name="Fortune - Data Access.tests.TestCategoryGateway"/> 
 		</cfcunit>
 		<cfcunit verbose="true"> 
 			<service hostname="localhost"/> 
-			<testclass name="Fortune - ColdSpring.tests.TestFortuneBean"/> 
+			<testclass name="Fortune - Data Access.tests.TestFortuneBean"/> 
 		</cfcunit>
 		<cfcunit verbose="true"> 
 			<service hostname="localhost"/> 
-			<testclass name="Fortune - ColdSpring.tests.TestFortuneDao"/> 
+			<testclass name="Fortune - Data Access.tests.TestFortuneDao"/> 
 		</cfcunit>
 		<cfcunit verbose="true"> 
 			<service hostname="localhost"/> 
-			<testclass name="Fortune - ColdSpring.tests.TestFortune"/> 
+			<testclass name="Fortune - Data Access.tests.TestFortune"/> 
 		</cfcunit>
 	</target>
 </project>
