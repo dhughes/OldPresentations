@@ -1,1 +1,0 @@
-<cfsilent><cfapplication name="FortuneComplete" sessionmanagement="true"/></cfsilent>
