@@ -1,1 +1,0 @@
-<cfsilent><cfapplication name="example" sessionmanagement="true"/></cfsilent>
