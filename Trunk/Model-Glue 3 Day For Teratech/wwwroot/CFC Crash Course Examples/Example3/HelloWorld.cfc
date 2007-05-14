@@ -1,4 +1,4 @@
-<cfcomponent displayname="HelloWorld"
+<cfcomponent
 	hint="This component is a more advanced Hello World example.">
 	
 	<cffunction name="sayHello"

@@ -1,0 +1,49 @@
+<modelglue>
+	<controllers>
+		<controller name="MyController" type="Fortune.controller.Controller">
+			<message-listener message="NeedCategories" function="DoGetCategories" />
+			<message-listener message="NeedFortune" function="DoGetFortune" />
+		</controller>
+	</controllers>
+  
+	<event-handlers>
+		<event-handler name="page.index">
+			<broadcasts> 
+				<message name="NeedCategories" />
+			</broadcasts>
+			<results>
+				<result do="view.template" />
+			</results>
+			<views>
+				<include name="body" template="dspIndex.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="Fortune.ShowFortune">
+			<broadcasts> 
+				<message name="NeedFortune" />
+			</broadcasts>
+			<results>
+				<result do="view.template" />
+			</results>
+			<views>
+				<include name="body" template="dspFortune.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="view.template">
+			<broadcasts />
+			<results />
+			<views>
+				<include name="template" template="dspTemplate.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="exception">
+			<broadcasts />
+			<views>
+				<include name="body" template="dspException.cfm" />
+			</views>
+		</event-handler>
+	</event-handlers>
+</modelglue>
