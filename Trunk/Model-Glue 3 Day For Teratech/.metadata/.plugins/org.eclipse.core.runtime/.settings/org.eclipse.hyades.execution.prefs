@@ -1,9 +1,9 @@
-#Sat May 12 09:28:38 EDT 2007
+#Mon May 14 07:32:16 EDT 2007
 CLASSPATH_ORG_ECLIPSE_JFACE=C\:\\Program Files\\eclipse\\plugins\\org.eclipse.jface_3.2.2.M20061214-1200.jar;
 CLASSPATH_ORG_ECLIPSE_HYADES_LOGGING_PARSERS=C\:\\Program Files\\eclipse\\plugins\\org.eclipse.hyades.logging.parsers_4.2.2.v200701141614\\hparse.jar;C\:\\Program Files\\eclipse\\plugins\\org.eclipse.hyades.logging.parsers_4.2.2.v200701141614\\tpglimport.jar;C\:\\Program Files\\eclipse\\plugins\\org.eclipse.hyades.logging.parsers_4.2.2.v200701141614\\bin;
 CLASSPATH_COM_IBM_ICU=C\:\\Program Files\\eclipse\\plugins\\com.ibm.icu_3.4.5.20061213.jar;
 ECLIPSEROOT=C\:\\Program Files\\eclipse
-CUSTOMPATH_ORG_ECLIPSE_HYADES_PERFMON_AGENTS=;%RASERVER_HOME%\\extensions\\org.eclipse.hyades.perfmon.agents
+CUSTOMPATH_ORG_ECLIPSE_HYADES_PERFMON_AGENTS=;%RASERVER_HOME%\\extensions\\org.eclipse.hyades.perfmon.agents;%RASERVER_HOME%\\extensions\\org.eclipse.hyades.perfmon.agents;%RASERVER_HOME%\\extensions\\org.eclipse.hyades.perfmon.agents
 CLASSPATH_ORG_ECLIPSE_TPTP_PLATFORM_COLLECTION_FRAMEWORK=C\:\\Program Files\\eclipse\\plugins\\org.eclipse.tptp.platform.collection.framework_4.1.102.v200701141614\\hcframe.jar;C\:\\Program Files\\eclipse\\plugins\\org.eclipse.tptp.platform.collection.framework_4.1.102.v200701141614\\bin;
 CLASSPATH_ORG_ECLIPSE_OSGI=c\:\\Program Files\\eclipse\\plugins\\org.eclipse.osgi_3.2.2.R32x_v20070118.jar;
 CLASSPATH_ORG_ECLIPSE_CORE_COMMANDS=C\:\\Program Files\\eclipse\\plugins\\org.eclipse.core.commands_3.2.0.I20060605-1400.jar;
@@ -37,7 +37,7 @@ CLASSPATH_ORG_ECLIPSE_HYADES_PROBEKIT=C\:\\Program Files\\eclipse\\plugins\\org.
 CLASSPATH_ORG_ECLIPSE_HYADES_PERFMON_AGENTS=;%CUSTOMPATH_ORG_ECLIPSE_HYADES_PERFMON_AGENTS%\\core\\lib\\coreagent.jar
 CLASSPATH_ORG_ECLIPSE_EQUINOX_COMMON=C\:\\Program Files\\eclipse\\plugins\\org.eclipse.equinox.common_3.2.0.v20060603.jar;
 PATH_ORG_ECLIPSE_HYADES_EXECUTION=C\:\\Program Files\\eclipse\\plugins\\org.eclipse.hyades.execution_4.2.4.v200701241554
-CLASSPATH=%PATH_ORG_ECLIPSE_TPTP_PLATFORM_COLLECTION_FRAMEWORK%\\hcframe.jar;;%CLASSPATH_ORG_ECLIPSE_HYADES_EXECUTION%
+CLASSPATH=%PATH_ORG_ECLIPSE_TPTP_PLATFORM_COLLECTION_FRAMEWORK%\\hcframe.jar;%PATH_ORG_ECLIPSE_TPTP_PLATFORM_COLLECTION_FRAMEWORK%\\hcframe.jar;%PATH_ORG_ECLIPSE_TPTP_PLATFORM_COLLECTION_FRAMEWORK%\\hcframe.jar;;%CLASSPATH_ORG_ECLIPSE_HYADES_EXECUTION%;%CLASSPATH_ORG_ECLIPSE_HYADES_EXECUTION%;%CLASSPATH_ORG_ECLIPSE_HYADES_EXECUTION%
 PATH_ORG_ECLIPSE_TPTP_PLATFORM_COLLECTION_FRAMEWORK=C\:\\Program Files\\eclipse\\plugins\\org.eclipse.tptp.platform.collection.framework_4.1.102.v200701141614
 PATH_ORG_ECLIPSE_HYADES_TEST_TOOLS_CORE=C\:\\Program Files\\eclipse\\plugins\\org.eclipse.hyades.test.tools.core_4.2.3.v200701141614
 LIB_EXTENSION=.dll

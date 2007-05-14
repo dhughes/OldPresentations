@@ -54,11 +54,11 @@
 		<cfparam name="session.fortuneLog" default="#ArrayNew(1)#" />
 		
 		<cfloop from="#ArrayLen(session.fortuneLog)#" to="#ArrayLen(session.fortuneLog) - 10#" index="x" step="-1">
-			<cfset ArrayAppend(result, session.fortuneLog[x]) />
-			
-			<cfif x IS 1 OR ArrayLen(result) IS arguments.max>
+			<cfif x IS 0 OR ArrayLen(result) IS arguments.max>
 				<cfbreak />
 			</cfif>
+			
+			<cfset ArrayAppend(result, session.fortuneLog[x]) />
 		</cfloop>
 		
 		<cfreturn result />		

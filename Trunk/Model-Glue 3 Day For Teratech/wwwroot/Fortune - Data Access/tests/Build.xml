@@ -25,5 +25,9 @@
 			<service hostname="localhost"/> 
 			<testclass name="Fortune - Data Access.tests.TestFortuneDao"/> 
 		</cfcunit>
+		<cfcunit verbose="true"> 
+			<service hostname="localhost"/> 
+			<testclass name="Fortune - Data Access.tests.TestFortune"/> 
+		</cfcunit>
 	</target>
 </project>
