@@ -1,0 +1,634 @@
+<cffunction name="init" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="" output="false">
+<cfargument name="transfer" type="transfer.com.Transfer" required="true">
+<cfargument name="utility" type="transfer.com.util.Utility" required="true">
+<cfargument name="nullable" type="transfer.com.sql.Nullable" required="true">
+<cfargument name="thisObject" type="transfer.com.TransferObject" required="true">
+<cfscript>
+instance = StructNew();
+setThisObject(arguments.thisObject);
+setTransfer(arguments.transfer);
+setUtility(arguments.utility);
+setNullable(arguments.nullable);
+setClassName("widget.Widget");
+setIsDirty(true);
+setIsPersisted(false);
+setIsClone(false);
+setwidgetId(getNullable().getNullNumeric(getClassName(), "widgetId"));
+setname("");
+setisActive(false);
+setLoaded(StructNew());
+setWidgetCategoryisLoaded(true);
+setParentWidgetTypeisLoaded(true);
+setWidgetCategoryCollection(ArrayNew(1));
+if(StructKeyExists(this, "configure") OR StructKeyExists(variables, "configure"))
+{
+configure();
+}
+return this;
+</cfscript>
+</cffunction>
+
+<cffunction name="equalsTransfer" access="public" returntype="boolean" default="boolean" hint="If an object is persisted, returns true if they are of the same class and same id. If not, returns true if they are the same object." output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="true">
+<cfscript>
+if(getIsPersisted())
+{
+if(getClassName() neq arguments.transfer.getClassName())
+{
+return false;
+}
+return (getwidgetId() eq arguments.transfer.getwidgetId());
+}
+else
+{
+return sameTransfer(arguments.transfer);
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="initEventObservers" access="package" returntype="void" default="void" hint="initialises the Observers on this object" output="false">
+<cfscript>
+getTransfer().addBeforeDeleteObserver(getThisObject());
+getTransfer().addAfterUpdateObserver(getThisObject());
+getTransfer().addBeforeDiscardObserver(getThisObject());
+</cfscript>
+</cffunction>
+
+<cffunction name="getwidgetId" access="public" returntype="numeric" default="numeric" hint="" output="false">
+<cfscript>
+return instance.widgetId;
+</cfscript>
+</cffunction>
+
+<cffunction name="setwidgetId" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="widgetId" type="numeric" required="true">
+<cfscript>
+if(NOT StructKeyExists(instance, "widgetId") OR getwidgetId() neq arguments.widgetId)
+{
+instance.widgetId = arguments.widgetId;
+setIsDirty(true);
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="getname" access="public" returntype="string" default="string" hint="" output="false">
+<cfscript>
+return instance.name;
+</cfscript>
+</cffunction>
+
+<cffunction name="setname" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="name" type="string" required="true">
+<cfscript>
+if(NOT StructKeyExists(instance, "name") OR Compare(getname(), arguments.name) neq 0)
+{
+instance.name = arguments.name;
+setIsDirty(true);
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="getisActive" access="public" returntype="boolean" default="boolean" hint="" output="false">
+<cfscript>
+return instance.isActive;
+</cfscript>
+</cffunction>
+
+<cffunction name="setisActive" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="isActive" type="boolean" required="true">
+<cfscript>
+if(NOT StructKeyExists(instance, "isActive") OR getisActive() neq arguments.isActive)
+{
+instance.isActive = arguments.isActive;
+setIsDirty(true);
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategoryisLoaded" access="private" returntype="boolean" default="boolean" hint="" output="false">
+<cfscript>
+if(NOT StructKeyExists(getLoaded(), "WidgetCategory"))
+{
+setWidgetCategoryisLoaded(false);
+}
+return StructFind(getLoaded(), "WidgetCategory");
+</cfscript>
+</cffunction>
+
+<cffunction name="setWidgetCategoryisLoaded" access="private" returntype="void" default="void" hint="" output="false">
+<cfargument name="loaded" type="boolean" required="true">
+<cfscript>
+StructInsert(getLoaded(), "WidgetCategory", arguments.loaded, true);
+</cfscript>
+</cffunction>
+
+<cffunction name="loadWidgetCategory" access="private" returntype="void" default="void" hint="" output="false">
+<cfif NOT getWidgetCategoryisLoaded()>
+<cflock name="transfer.load.widget.Widget.#getwidgetId()#" timeout="60">
+<cfif NOT getWidgetCategoryisLoaded()>
+<cfscript>
+getTransfer().loadManyToMany(getThisObject(), "WidgetCategory");
+</cfscript>
+</cfif>
+</cflock>
+</cfif>
+</cffunction>
+
+<cffunction name="getParentWidgetTypeisLoaded" access="private" returntype="boolean" default="boolean" hint="" output="false">
+<cfscript>
+if(NOT StructKeyExists(getLoaded(), "ParentWidgetType"))
+{
+setParentWidgetTypeisLoaded(false);
+}
+return StructFind(getLoaded(), "ParentWidgetType");
+</cfscript>
+</cffunction>
+
+<cffunction name="setParentWidgetTypeisLoaded" access="private" returntype="void" default="void" hint="" output="false">
+<cfargument name="loaded" type="boolean" required="true">
+<cfscript>
+StructInsert(getLoaded(), "ParentWidgetType", arguments.loaded, true);
+</cfscript>
+</cffunction>
+
+<cffunction name="loadParentWidgetType" access="private" returntype="void" default="void" hint="" output="false">
+<cfif NOT getParentWidgetTypeisLoaded()>
+<cflock name="transfer.load.widget.Widget.#getwidgetId()#" timeout="60">
+<cfif NOT getParentWidgetTypeisLoaded()>
+<cfscript>
+getTransfer().loadParentOneToMany(getThisObject(), "ParentWidgetType");
+</cfscript>
+</cfif>
+</cflock>
+</cfif>
+</cffunction>
+
+<cffunction name="setMemento" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="memento" type="struct" required="true">
+<cfscript>
+var composite = 0;
+if(NOT getIsPersisted())
+{
+setwidgetId(arguments.memento.widgetId);
+}
+setPropertyMemento(arguments.memento);
+setWidgetCategoryisLoaded(false);
+setParentWidgetTypeisLoaded(false);
+setParentWidgetTypeMemento(memento, false);
+</cfscript>
+</cffunction>
+
+<cffunction name="setPropertyMemento" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="memento" type="struct" required="true">
+<cfscript>
+setname(arguments.memento.name);
+setisActive(arguments.memento.isActive);
+</cfscript>
+</cffunction>
+
+<cffunction name="setParentWidgetTypeMemento" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="memento" type="struct" required="true">
+<cfargument name="retrieveParent" type="boolean" required="false" default="true">
+<cfscript>
+if(StructKeyExists(arguments.memento, "parentWidgetType_transferObject"))
+{
+setParentWidgetTypeisLoaded(true);
+}
+else if(arguments.retrieveParent)
+{
+if(StructKeyExists(arguments.memento, "parentWidgetType_widgetTypeId"))
+{
+composite = getTransfer().get("widget.WidgetType", arguments.memento.parentWidgetType_widgetTypeId);
+if(getIsClone() AND composite.getIsPersisted())
+{
+composite = composite.clone();
+}
+setParentWidgetTypeisLoaded(true);
+if(composite.getIsPersisted())
+{
+setParentWidgetType(composite);
+}
+else
+{
+removeParentWidgetType();
+}
+}
+else
+{
+setParentWidgetTypeisLoaded(true);
+removeParentWidgetType();
+}
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="setWidgetCategoryMemento" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="memento" type="array" required="true">
+<cfscript>
+var counter = 0;
+var len = 0;
+var item = 0;
+var composite = 0;
+setWidgetCategoryisLoaded(true);
+len = ArrayLen(arguments.memento);
+clearWidgetCategory();
+for(counter = 1; counter lte len; counter = counter + 1)
+{
+composite = arguments.memento[counter];
+composite.parentWidget_transferObject = getThisObject();
+item = getComposite("widget.WidgetCategory", composite, "widgetCategoryId");
+addWidgetCategory(item);
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="getMemento" access="public" returntype="struct" default="struct" hint="Returns the memento for all non-lazy members of this object" output="false">
+<cfscript>
+var memento = StructNew();
+memento.widgetId = getwidgetId();
+memento.transfer_isDirty = getIsDirty();
+memento.transfer_isPersisted = getIsPersisted();
+StructAppend(memento, getPropertyMemento());
+return memento;
+</cfscript>
+</cffunction>
+
+<cffunction name="getPropertyMemento" access="public" returntype="struct" default="struct" hint="returns the memento for properties" output="false">
+<cfscript>
+var memento = StructNew();
+memento.name = getname();
+memento.isActive = getisActive();
+return duplicate(memento);
+</cfscript>
+</cffunction>
+
+<cffunction name="getParentWidgetTypeMemento" access="public" returntype="struct" default="struct" hint="returns the memento for the parent onetomany widget.WidgetType" output="false">
+<cfscript>
+var memento = StructNew();
+if(hasParentWidgetType())
+{
+memento.parentWidgetType_widgetTypeId = getParentWidgetType().getwidgetTypeId();
+}
+return duplicate(memento);
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategoryMemento" access="public" returntype="array" default="array" hint="returns the memento for the manytomany WidgetCategory" output="false">
+<cfscript>
+var memento = ArrayNew(1);
+var iterator = getWidgetCategoryIterator();
+var item = 0;
+while(iterator.hasNext())
+{
+item = iterator.next();
+ArrayAppend(memento, item.getMemento());
+}
+return memento;
+</cfscript>
+</cffunction>
+
+<cffunction name="copyValuesTo" access="public" returntype="void" default="void" hint="Copies the values of this object to one of the same class" output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="true">
+<cfscript>
+if(arguments.transfer.getClassName() neq "widget.Widget")
+{
+throw("InvalidTransferClassException","The supplied Transfer class was not the one specified in the configuration file ","The Transfer class of '#arguments.transfer.getClassName()#' does not match the expected class of 'widget.Widget'");
+}
+arguments.transfer.setMemento(getMemento());
+if(getWidgetCategoryisLoaded())
+{
+arguments.transfer.setWidgetCategoryMemento(getWidgetCategoryMemento());
+}
+arguments.transfer.setParentWidgetTypeMemento(getParentWidgetTypeMemento(), true);
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategoryCollection" access="private" returntype="array" default="array" hint="" output="false">
+<cfscript>
+return instance.WidgetCategory;
+</cfscript>
+</cffunction>
+
+<cffunction name="setWidgetCategoryCollection" access="private" returntype="void" default="void" hint="" output="false">
+<cfargument name="WidgetCategory" type="array" required="true">
+<cfscript>
+instance.WidgetCategory = arguments.WidgetCategory;
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategory" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="" output="false">
+<cfargument name="index" type="numeric" required="true">
+<cfscript>
+if(NOT getWidgetCategoryisLoaded())
+{
+loadWidgetCategory();
+}
+return getWidgetCategoryCollection().get(JavaCast("int", arguments.index - 1));
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategoryArray" access="public" returntype="array" default="array" hint="" output="false">
+<cfscript>
+var array = ArrayNew(1);
+if(NOT getWidgetCategoryisLoaded())
+{
+loadWidgetCategory();
+}
+array.addAll(getWidgetCategoryCollection());
+return array;
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategoryIterator" access="public" returntype="any" default="any" hint="" output="false">
+<cfscript>
+if(NOT getWidgetCategoryisLoaded())
+{
+loadWidgetCategory();
+}
+return getWidgetCategoryArray().iterator();
+</cfscript>
+</cffunction>
+
+<cffunction name="containsWidgetCategory" access="public" returntype="boolean" default="boolean" hint="" output="false">
+<cfargument name="object" type="transfer.com.TransferObject" required="true">
+<cfscript>
+var iterator = 0;
+var composite = 0;
+if(NOT getWidgetCategoryisLoaded())
+{
+loadWidgetCategory();
+}
+iterator = getWidgetCategoryCollection().iterator();
+if(arguments.object.getClassName() neq "widget.WidgetCategory")
+{
+throw("InvalidTransferClassException","The supplied Transfer class was not the one specified in the configuration file ","The Transfer class of '#arguments.object.getClassName()#' does not match the expected class of 'widget.WidgetCategory'");
+}
+while(iterator.hasNext())
+{
+composite = iterator.next();
+if(composite.equalsTransfer(arguments.object))
+{
+return true;
+}
+}
+return false;
+</cfscript>
+</cffunction>
+
+<cffunction name="findWidgetCategory" access="public" returntype="numeric" default="numeric" hint="" output="false">
+<cfargument name="object" type="transfer.com.TransferObject" required="true">
+<cfscript>
+var iterator = 0;
+var composite = 0;
+var counter = 0;
+if(NOT getWidgetCategoryisLoaded())
+{
+loadWidgetCategory();
+}
+iterator = getWidgetCategoryCollection().iterator();
+if(arguments.object.getClassName() neq "widget.WidgetCategory")
+{
+throw("InvalidTransferClassException","The supplied Transfer class was not the one specified in the configuration file ","The Transfer class of '#arguments.object.getClassName()#' does not match the expected class of 'widget.WidgetCategory'");
+}
+while(iterator.hasNext())
+{
+composite = iterator.next();
+counter = counter + 1;
+if(composite.equalsTransfer(arguments.object))
+{
+return counter;
+}
+}
+return -1;
+</cfscript>
+</cffunction>
+
+<cffunction name="addWidgetCategory" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="object" type="transfer.com.TransferObject" required="true">
+<cfscript>
+if(arguments.object.getClassName() neq "widget.WidgetCategory")
+{
+throw("InvalidTransferClassException","The supplied Transfer class was not the one specified in the configuration file ","The Transfer class of '#arguments.object.getClassName()#' does not match the expected class of 'widget.WidgetCategory'");
+}
+ArrayAppend(getWidgetCategoryCollection(), arguments.object);
+setIsDirty(true);
+</cfscript>
+</cffunction>
+
+<cffunction name="removeWidgetCategory" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="object" type="transfer.com.TransferObject" required="true">
+<cfscript>
+var iterator = getWidgetCategoryCollection().iterator();
+var composite = 0;
+if(arguments.object.getClassName() neq "widget.WidgetCategory")
+{
+throw("InvalidTransferClassException","The supplied Transfer class was not the one specified in the configuration file ","The Transfer class of '#arguments.object.getClassName()#' does not match the expected class of 'widget.WidgetCategory'");
+}
+while(iterator.hasNext())
+{
+composite = iterator.next();
+if(composite.equalsTransfer(arguments.object))
+{
+iterator.remove();
+setIsDirty(true);
+return;
+}
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="clearWidgetCategory" access="public" returntype="void" default="void" hint="" output="false">
+<cfscript>
+ArrayClear(getWidgetCategoryCollection());
+setIsDirty(true);
+</cfscript>
+</cffunction>
+
+<cffunction name="sortWidgetCategory" access="public" returntype="void" default="void" hint="" output="false">
+<cfscript>
+if(NOT arrayisEmpty(getWidgetCategoryCollection()))
+{
+setWidgetCategoryCollection(getUtility().quickSort(getWidgetCategoryCollection(), WidgetCategoryComparator));
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="WidgetCategoryComparator" access="private" returntype="numeric" default="numeric" hint="" output="false">
+<cfargument name="object1" type="transfer.com.TransferObject" required="true">
+<cfargument name="object2" type="transfer.com.TransferObject" required="true">
+<cfscript>
+if(arguments.object1.getwidgetCategoryId() lt arguments.object2.getwidgetCategoryId())
+{
+return -1;
+}
+else if(arguments.object1.getwidgetCategoryId() gt arguments.object2.getwidgetCategoryId())
+{
+return 1;
+}
+return 0;
+</cfscript>
+</cffunction>
+
+<cffunction name="getParentWidgetType" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="" output="false">
+<cfscript>
+if(NOT getParentWidgetTypeisLoaded())
+{
+loadParentWidgetType();
+}
+if(NOT structKeyExists(instance, "WidgetType"))
+{
+throw("OneToManyParentNotSetException","A OneToMany Parent TransferObject has not been initialised.","In TransferObject 'widget.Widget' onetomany parent 'widget.WidgetType' is not set.");
+}
+return instance.WidgetType;
+</cfscript>
+</cffunction>
+
+<cffunction name="setParentWidgetType" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="true">
+<cfscript>
+if(arguments.transfer.getClassName() neq "widget.WidgetType")
+{
+throw("InvalidTransferClassException","The supplied Transfer class was not the one specified in the configuration file ","The Transfer class of '#arguments.transfer.getClassName()#' does not match the expected class of 'widget.WidgetType'");
+}
+if(NOT getParentWidgetTypeIsLoaded() OR NOT hasParentWidgetType() OR NOT getParentWidgetType().equalsTransfer(arguments.transfer))
+{
+if(getParentWidgetTypeIsLoaded() AND hasParentWidgetType())
+{
+removeParentWidgetType();
+}
+instance.WidgetType = arguments.transfer;
+setParentWidgetTypeisLoaded(true);
+setIsDirty(true);
+}
+if(NOT getParentWidgetType().containsWidget(getThisObject()))
+{
+getParentWidgetType().getOriginalTransferObject().addWidget(getThisObject());
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="hasParentWidgetType" access="public" returntype="boolean" default="boolean" hint="" output="false">
+<cfscript>
+if(NOT getParentWidgetTypeisLoaded())
+{
+loadParentWidgetType();
+}
+return StructKeyExists(instance,"WidgetType");
+</cfscript>
+</cffunction>
+
+<cffunction name="removeParentWidgetType" access="public" returntype="void" default="void" hint="" output="false">
+<cfscript>
+if(NOT getParentWidgetTypeisLoaded())
+{
+loadParentWidgetType();
+}
+if(hasParentWidgetType())
+{
+getParentWidgetType().getOriginalTransferObject().removeWidget(getThisObject());
+StructDelete(instance,"WidgetType");
+setIsDirty(true);
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="actionBeforeDeleteTransferEvent" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true">
+<cfscript>
+var changed = false;
+switch(arguments.event.getTransferObject().getClassName())
+{
+case "widget.WidgetCategory":
+if(getWidgetCategoryIsLoaded())
+{
+while(containsWidgetCategory(arguments.event.getTransferObject()))
+{
+removeWidgetCategory(arguments.event.getTransferObject());
+changed = true;
+}
+}
+break;
+}
+switch(arguments.event.getTransferObject().getClassName())
+{
+case "widget.WidgetType":
+if(hasParentWidgetType() AND arguments.event.getTransferObject().equalsTransfer(getParentWidgetType()))
+{
+removeParentWidgetType();
+changed = true;
+}
+break;
+}
+switch(arguments.event.getTransferObject().getClassName())
+{
+}
+if(changed eq true)
+{
+getTransfer().update(getThisObject());
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="actionAfterDeleteTransferEvent" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true">
+<cfscript>
+switch(arguments.event.getTransferObject().getClassName())
+{
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="actionAfterUpdateTransferEvent" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true">
+<cfscript>
+switch(arguments.event.getTransferObject().getClassName())
+{
+}
+switch(arguments.event.getTransferObject().getClassName())
+{
+case "widget.WidgetCategory":
+if(getWidgetCategoryIsLoaded() AND containsWidgetCategory(arguments.event.getTransferObject()))
+{
+sortWidgetCategory();
+}
+break;
+}
+</cfscript>
+</cffunction>
+
+<cffunction name="actionBeforeDiscardTransferEvent" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true">
+<cfscript>
+var discard = false;
+switch(arguments.event.getTransferObject().getClassName())
+{
+}
+switch(arguments.event.getTransferObject().getClassName())
+{
+case "widget.WidgetCategory":
+if(getWidgetCategoryIsLoaded() AND containsWidgetCategory(arguments.event.getTransferObject()))
+{
+discard = true;
+}
+break;
+}
+switch(arguments.event.getTransferObject().getClassName())
+{
+}
+switch(arguments.event.getTransferObject().getClassName())
+{
+case "widget.WidgetType":
+if(hasParentWidgetType() AND arguments.event.getTransferObject().equalsTransfer(getParentWidgetType()))
+{
+discard = true;
+}
+break;
+}
+if(discard)
+{
+getTransfer().discard(getThisObject());
+}
+</cfscript>
+</cffunction>
+
+

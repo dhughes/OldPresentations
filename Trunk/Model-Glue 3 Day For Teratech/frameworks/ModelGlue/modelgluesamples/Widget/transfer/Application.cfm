@@ -1,0 +1,1 @@
+<cfsilent><cfapplication name="widget/transfer" sessionmanagement="true"/></cfsilent>
