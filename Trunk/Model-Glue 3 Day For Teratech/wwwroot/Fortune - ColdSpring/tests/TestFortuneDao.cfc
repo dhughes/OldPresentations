@@ -1,11 +1,12 @@
 <cfcomponent extends="org.cfcunit.framework.TestCase" output="false" >
 
-	<!--- setup the test --->
 	<cffunction name="setup" returntype="void" access="private"> 
 		<cfsetting showdebugoutput="false" />
-		<cfset FortuneBean = CreateObject("Component", "Fortune - Data Access.model.FortuneBean") />
-		<cfset Datasource = CreateObject("Component", "Fortune - Data Access.model.Datasource").init("Fortune", "", "") />
-		<cfset FortuneDao = CreateObject("Component", "Fortune - Data Access.model.FortuneDao").init(Datasource) />
+		<cfset ColdSpring = CreateObject("component", "coldspring.beans.DefaultXmlBeanFactory").init() />
+		<cfset ColdSpring.loadBeans("/Fortune - ColdSpring/config/ColdSpring.xml") />
+		
+		<cfset FortuneDao = ColdSpring.getBean("FortuneDao") />
+		<cfset FortuneBean = CreateObject("component", "Fortune - ColdSpring.model.FortuneBean") />
 	</cffunction>
 	
 	<!--- test Read Random Fortune --->
@@ -37,7 +38,7 @@
 		<cfset assertTrue(fortuneId GT 0, "Fortune not assigned an id!") />
 		
 		<!--- create a new fortune bean --->
-		<cfset FortuneBean = CreateObject("Component", "Fortune - Data Access.model.FortuneBean") />
+		<cfset FortuneBean = CreateObject("Component", "Fortune - ColdSpring.model.FortuneBean") />
 		<cfset FortuneBean.setFortuneId(fortuneId) />
 		
 		<!--- read the fortune to insure it was created --->
@@ -55,7 +56,7 @@
 		<cfset FortuneDao.update(FortuneBean) />
 		
 		<!--- create a new fortune bean --->
-		<cfset FortuneBean = CreateObject("Component", "Fortune - Data Access.model.FortuneBean") />
+		<cfset FortuneBean = CreateObject("Component", "Fortune - ColdSpring.model.FortuneBean") />
 		<cfset FortuneBean.setFortuneId(fortuneId) />
 		
 		<!--- read the fortune to insure it was created --->
@@ -69,7 +70,7 @@
 		<cfset FortuneDao.delete(FortuneBean) />
 		
 		<!--- create a new fortune bean --->
-		<cfset FortuneBean = CreateObject("Component", "Fortune - Data Access.model.FortuneBean") />
+		<cfset FortuneBean = CreateObject("Component", "Fortune - ColdSpring.model.FortuneBean") />
 		<cfset FortuneBean.setFortuneId(fortuneId) />
 		
 		<!--- try to read the fortune to insure it was created --->

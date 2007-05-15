@@ -3,13 +3,15 @@
 	<!--- setup the test --->
 	<cffunction name="setup" returntype="void" access="private"> 
 		<cfsetting showdebugoutput="false" />
-
-		<cfset Fortune = CreateObject("Component", "Fortune - Data Access.model.Fortune").init("Fortune", "", "") />
+		<cfset ColdSpring = CreateObject("component", "coldspring.beans.DefaultXmlBeanFactory").init() />
+		<cfset ColdSpring.loadBeans("/Fortune - ColdSpring/config/ColdSpring.xml") />
+		
+		<cfset FortuneService = ColdSpring.getBean("FortuneService") />
 	</cffunction>
 	
 	<!--- test getCategories --->
 	<cffunction name="testGetCategories" returntype="void" access="public"> 
-		<cfset var categories = Fortune.getCategories() />
+		<cfset var categories = FortuneService.getCategories() />
 		<cfset var columns = categories.columnList />
 		<cfset var sampleCategory = categories.category />
 		
@@ -24,21 +26,21 @@
 	
 	<!--- test getFortune --->
 	<cffunction name="testGetFortune" returntype="void" access="public"> 
-		<cfset var categories = Fortune.getCategories() />
+		<!--- <cfset var categories = FortuneService.getCategories() />
 		
 		<!--- get a fortune for the first specified categoryId --->
-		<cfset var result = Fortune.getFortune(categories.categoryId) />
+		<cfset var result = FortuneService.getFortune(categories.categoryId) />
 		
 		<!--- assert that the fortune is a simple value --->
 		<cfset assertSimpleValue(result, "Fortune returned is not a simple value")>
-		
+		 --->
 		<!--- get a fortune for an invalid category.  This should thrown an error! --->
 		<cftry>
-			<cfset result = Fortune.getFortune(-1) />		
+			<cfset result = FortuneService.getFortune(-1) />		
 			<!--- fail the test, this should have thrown an error --->
 			<cfset fail("Invalid category did not throw error") />
 			
-			<cfcatch type="Fortune.getFortune.NoFortune">
+			<cfcatch type="FortuneDao.read.NoSuchRecord">
 				<!--- do nothing, we succeeded! --->
 			</cfcatch>
 			<cfcatch>

@@ -45,7 +45,7 @@
 		<cfif read.recordcount>
 			<cfset arguments.FortuneBean.setFortuneId(read.fortuneId) />
 			<cfset arguments.FortuneBean.setFortune(read.fortune) />
-		<cfelse>
+		<cfelse>		
 			<cfthrow message="FortuneId Not Found" detail="The fortuneId set in the provided Fortune Bean could did not exist" type="FortuneDao.read.NoSuchRecord" />
 		</cfif>
 	</cffunction>

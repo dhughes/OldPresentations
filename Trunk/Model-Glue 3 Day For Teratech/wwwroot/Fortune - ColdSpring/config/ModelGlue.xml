@@ -1,6 +1,6 @@
 <modelglue>
 	<controllers>
-		<controller name="MyController" type="Fortune - Data Access.controller.Controller">
+		<controller name="MyController" type="Fortune - ColdSpring.controller.Controller">
 			<message-listener message="NeedCategories" function="DoGetCategories" />
 			<message-listener message="NeedFortune" function="DoGetFortune" />
 			<message-listener message="NeedToLogFortune" function="DoLogFortune" />

@@ -3,8 +3,10 @@
 	<!--- setup the test --->
 	<cffunction name="setup" returntype="void" access="private"> 
 		<cfsetting showdebugoutput="false" />
-		<cfset Datasource = CreateObject("Component", "Fortune - Data Access.model.Datasource").init("Fortune", "", "") />
-		<cfset CategoryGateway = CreateObject("Component", "Fortune - Data Access.model.CategoryGateway").init(Datasource) />
+		<cfset ColdSpring = CreateObject("component", "coldspring.beans.DefaultXmlBeanFactory").init() />
+		<cfset ColdSpring.loadBeans("/Fortune - ColdSpring/config/ColdSpring.xml") />
+		
+		<cfset CategoryGateway = ColdSpring.getBean("CategoryGateway") />
 	</cffunction>
 	
 	<!--- test getCategories --->

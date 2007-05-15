@@ -8,7 +8,7 @@
 		<cfset username = "test1" />
 		<cfset password = "test2" />
 
-		<cfset Datasource = CreateObject("Component", "Fortune - Data Access.model.Datasource").init(dsn, username, password) />
+		<cfset Datasource = CreateObject("Component", "Fortune - ColdSpring.model.Datasource").init(dsn, username, password) />
 	</cffunction>
 	
 	<!--- test getDatasource --->

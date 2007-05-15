@@ -1,13 +1,11 @@
 <cfcomponent>
 
-	<cffunction name="init" access="public" hint="I configure and return a fortune CFC" output="false" returntype="Fortune">
-		<cfargument name="datasource" hint="I am the coldfusion datasource to use" required="true" type="string" />
-		<cfargument name="username" hint="I am the username to user" required="no" type="string" default="" />
-		<cfargument name="password" hint="I am the password to use" required="no" type="string" default="" />
+	<cffunction name="init" access="public" hint="I configure and return a fortune CFC" output="false" returntype="FortuneService">
+		<cfargument name="CategoryGateway" hint="I am the CategoryGateway" required="yes" type="Fortune - ColdSpring.model.CategoryGateway" />
+		<cfargument name="FortuneDao" hint="I am the FortuneDao" required="yes" type="Fortune - ColdSpring.model.FortuneDao" />
 		
-		<cfset variables.Datasource = CreateObject("Component", "Fortune - Data Access.model.Datasource").init(arguments.datasource, arguments.username, arguments.password) />
-		<cfset variables.CategoryGateway = CreateObject("Component", "Fortune - Data Access.model.CategoryGateway").init(variables.Datasource) />
-		<cfset variables.FortuneDao = CreateObject("Component", "Fortune - Data Access.model.FortuneDao").init(variables.Datasource) />
+		<cfset variables.CategoryGateway = arguments.CategoryGateway />
+		<cfset variables.FortuneDao = arguments.FortuneDao />
 		
 		<cfreturn this />
 	</cffunction>
@@ -18,7 +16,7 @@
 	
 	<cffunction name="getFortune" access="public" hint="I get a fortune and return it" output="false" returntype="string">
 		<cfargument name="categoryId" hint="I am the id of the cateogry to get the fortune from" required="yes" type="numeric" />
-		<cfset var FortuneBean = CreateObject("Component", "Fortune - Data Access.model.FortuneBean") />
+		<cfset var FortuneBean = CreateObject("Component", "Fortune - ColdSpring.model.FortuneBean") />
 		
 		<cfset FortuneBean.setCategoryId(arguments.categoryId) />
 		

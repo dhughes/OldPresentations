@@ -3,7 +3,7 @@
 	<!--- setup the test --->
 	<cffunction name="setup" returntype="void" access="private"> 
 		<cfsetting showdebugoutput="false" />
-		<cfset FortuneBean = CreateObject("Component", "Fortune - Data Access.model.FortuneBean") />
+		<cfset FortuneBean = CreateObject("Component", "Fortune - ColdSpring.model.FortuneBean") />
 	</cffunction>
 	
 	<!--- test fortuneId --->
