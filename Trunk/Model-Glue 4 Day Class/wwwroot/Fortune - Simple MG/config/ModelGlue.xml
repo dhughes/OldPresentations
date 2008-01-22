@@ -1,0 +1,57 @@
+<modelglue>
+	<controllers>
+		<controller name="MyController" type="Fortune - Simple MG.controller.Controller">
+			<message-listener message="NeedFortune" function="DoGetFortune" />
+			<message-listener message="NeedCategories" function="DoGetCategories" />
+		</controller>
+		<controller name="ErrorController" type="Fortune - Simple MG.controller.ErrorController">
+			
+		</controller>
+		
+	</controllers>
+  
+	<event-handlers>
+		<event-handler name="test">
+			<broadcasts> 
+				<message name="NeedCategories" />
+			</broadcasts>
+			<results>
+				<result do="view.template" />
+			</results>
+			<views>
+				<include name="body" template="consumer/dspIndex.cfm">
+					<value name="xe.submit" value="Fortune.ShowFortune" />
+				</include>
+			</views>
+		</event-handler>
+		
+		<event-handler name="Fortune.ShowFortune">
+			<broadcasts> 
+				<message name="NeedFortune" />
+			</broadcasts>
+			<results>
+				<result do="view.template" />
+			</results>
+			<views>
+				<include name="body" template="dspFortune.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="view.template">
+			<broadcasts />
+			<results />
+			<views>
+				<include name="template" template="dspTemplate.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="exception">
+			<broadcasts>
+				<message name="ExceptionOccured" />			
+			</broadcasts>
+			<views>
+				<include name="body" template="dspException.cfm" />
+			</views>
+		</event-handler>
+	</event-handlers>
+</modelglue>

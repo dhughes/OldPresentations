@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<project name="Unit Tests" default="RunTests" basedir="..">
+	
+	<taskdef resource="org/cfcunit/ant/antlib.xml">
+		<classpath>
+			<pathelement location="cfcunit/lib/ant-cfcunit.jar"/>
+		</classpath>
+	</taskdef>
+		
+	<target name="RunTests">
+		<cfcunit verbose="true"> 
+			<service hostname="localhost"/> 
+			<testclass name="Unit Tests.TestFortune"/> 
+		</cfcunit>
+	</target>
+</project>

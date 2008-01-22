@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+																															 
+<!--
+   Copyright (c) 2006, Paul Kenney
+   All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Eclipse Integration</title>
+	
+	<style type="text/css">
+		@import url(assets/styles.css);
+	</style>
+</head>
+
+<body id="eclipse">
+<h2>Eclipse Integration</h2>
+
+<p>
+	If you have used the <a href="ant_task.html">cfcUnit Ant task</a> to automate the execution of your unit tests and you
+	use Eclipse (or CFEclise) as your ColdFusion code editor, it is possible to have Eclipse run your tests
+	each time you save your files. This is done using what are called "Builders", which
+	are configurable tasks that are triggered by changes in specific files and folders managed
+	by the project. You can create a builder that will execute one or more targets in an Ant build
+	file, and therefore it can run your [existing] build target that contains the cfcUnit Ant task.
+</p>
+<p>
+	Below are the directions for setting this up for your own CFEclipse project.
+</p>
+
+
+<h3>Setting up the cfcUnit Builder</h3>
+<ol class="directions">
+	<li>
+		Right-click on the CFML Project and select "Properties" from the menu. The project properties
+		window will appear with a menu on the left.
+	</li>
+	<li>
+		<img src="assets/images/eclipse/project_properties.gif" border="0" align="right" />
+		Select "Builders". The list of this project's builders will appear on the right side. If you
+		have not configured one of these before, there will be nothing listed.
+	</li>
+	<li>
+		<img src="assets/images/eclipse/choose_configuration_type.gif" align="right" />
+		Click the button labeled "New...", select "Ant Build" in the window that pops up, and click 
+		"OK". This opens up the properties editor for the new builder.
+	</li>
+	<li>
+		<img src="assets/images/eclipse/builder_tab_main.gif" align="right" />
+		<p>
+			First thing to do now is give this new builder a name, and there is a field at the top labeled
+			"Name" in which this can be entered. Let's call it "cfcUnit Builder".
+		</p>
+		<p>
+			The first tab, "Main", is where you set general settings for this builder. One of the things we
+			must set is the "Buildfile" property, which is the location of the Ant build file. Click
+			"Browse Workspace...", select the build.xml for the current project, and click "OK".
+		</p>
+	</li>
+	<li>
+		<img src="assets/images/eclipse/builder_tab_targets.gif" align="right" />
+		The next tab of interest is "Targets", so select it. The "Auto Build" field contains the name of
+		the target in the build file that should be run each time one of the project's files is
+		modified.
+	</li>
+	<li>
+		<img src="assets/images/eclipse/builder_tab_targets_set_target.gif" align="right" />
+		Click "Set Targets..." for this field, select the build target that contains the
+		cfcUnit task you want this builder to run, and click "OK".
+	</li>
+	<li>
+		<img src="assets/images/eclipse/builder_tab_buildoptions.gif" align="right" />
+		The last tab you need to worry about is "Build Options". Select it, and check the option labeled
+		"Allocate Console". This makes sure that if this builder runs an output console is created if
+		one is not open.
+	</li>
+	<li>
+		<img src="assets/images/eclipse/builder_tab_buildoptions_workingset.gif" align="right" />
+		<p>
+			The last thing you need to do is tell the builder which files it needs to monitor for
+			changes. To do this, check the box labeled "Specify working set of relevant resources" and
+			click the button to the right labeled "Specify Resources...".
+		</p>
+		<p>
+			The dialog that appears shows all files for all the projects in the current workspace. First,
+			Find the files or directories that you want to trigger this builder. Then make sure you give
+			this working set a name in the field labeled "Working set name". Click the button labeled
+			"Finish".
+		</p>
+	</li>	
+	<li>
+		All the appropriate properties have been set, so you can click "OK" at the bottom right corner of 
+		the window. You should be looking at the list of builders that now includes the one you just created. 
+		Make sure it is checked (if you want it to run), and click "OK" at the bottom.
+	</li>
+</ol>
+
+<p>
+	Congratulations! You have just set up you Eclipse project so that you are testing your code every time
+	you change it.
+</p>
+
+
+</body>
+</html>
