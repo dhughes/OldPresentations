@@ -1,5 +1,4 @@
-<cfcomponent displayname="Cat"
-	hint="A cat component.">
+<cfcomponent hint="A cat component.">
 
 	<cfset variables.color = "" />
 	<cfset variables.weight = "" />

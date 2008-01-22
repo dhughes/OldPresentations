@@ -2,10 +2,10 @@
 <!--- Instantiate the HelloWorld component --->
 <cfobject
 	component="HelloWorld"
-	name="helloWorld" />
+	name="request.helloWorld" />
 
 <!--- call the sayHello method on the
 helloWorld object and pass two arguments --->
 <cfoutput>
-<p>#helloWorld.sayHello("Powered By Detroit", 5)#</p>
+<p>#request.helloWorld.sayHello("Powered By Detroit", 5)#</p>
 </cfoutput>

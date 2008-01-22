@@ -1,5 +1,4 @@
-<cfcomponent displayname="Cat"
-	hint="A cat component.">
+<cfcomponent hint="A cat component.">
 
 	<cfset this.color = "" />
 	<cfset this.weight = "" />
@@ -12,4 +11,5 @@
 		returntype="string">
 		<cfreturn "I am a #this.color# cat weighing in at #this.weight#.  My name is #this.name#!" />
 	</cffunction>
+	
 </cfcomponent>

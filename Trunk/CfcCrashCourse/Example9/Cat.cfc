@@ -1,10 +1,5 @@
-<cfcomponent displayname="Cat"
-	hint="A cat component.">
+<cfcomponent hint="A cat component.">
 
-	<!--- a sample property --->
-	<cfset this.tailLength = "15 inches" />
-
-	<!--- instance variables --->
 	<cfset variables.color = "" />
 	<cfset variables.weight = "" />
 	<cfset variables.name = "" />
