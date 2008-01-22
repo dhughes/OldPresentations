@@ -1,0 +1,1 @@
+<cfsilent><cfapplication name="widget/reactor" sessionmanagement="true"/></cfsilent>

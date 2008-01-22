@@ -1,0 +1,1 @@
+This is where ORM frameworks will place their generated CFC code.

@@ -1,0 +1,272 @@
+<cffunction name="getIsClone" access="public" returntype="boolean" default="boolean" hint="" output="false">
+<cfscript>
+return getTransferObject().getIsClone();
+</cfscript>
+</cffunction>
+
+<cffunction name="setPropertyMemento" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="memento" type="struct" required="true" default="">
+<cfscript>
+getTransferObject().setPropertyMemento(arguments.memento);
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategoryIterator" access="public" returntype="any" default="any" hint="" output="false">
+<cfscript>
+return getTransferObject().getWidgetCategoryIterator();
+</cfscript>
+</cffunction>
+
+<cffunction name="setParentWidgetType" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="true" default="">
+<cfscript>
+getTransferObject().setParentWidgetType(arguments.transfer);
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategoryArray" access="public" returntype="array" default="array" hint="" output="false">
+<cfscript>
+return getTransferObject().getWidgetCategoryArray();
+</cfscript>
+</cffunction>
+
+<cffunction name="equalsTransfer" access="public" returntype="boolean" default="boolean" hint="If an object is persisted, returns true if they are of the same class and same id. If not, returns true if they are the same object." output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="true" default="">
+<cfscript>
+return getTransferObject().equalsTransfer(arguments.transfer);
+</cfscript>
+</cffunction>
+
+<cffunction name="setWidgetCategoryMemento" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="memento" type="array" required="true" default="">
+<cfscript>
+getTransferObject().setWidgetCategoryMemento(arguments.memento);
+</cfscript>
+</cffunction>
+
+<cffunction name="addWidgetCategory" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="object" type="transfer.com.TransferObject" required="true" default="">
+<cfscript>
+getTransferObject().addWidgetCategory(arguments.object);
+</cfscript>
+</cffunction>
+
+<cffunction name="getPropertyMemento" access="public" returntype="struct" default="struct" hint="returns the memento for properties" output="false">
+<cfscript>
+return getTransferObject().getPropertyMemento();
+</cfscript>
+</cffunction>
+
+<cffunction name="removeWidgetCategory" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="object" type="transfer.com.TransferObject" required="true" default="">
+<cfscript>
+getTransferObject().removeWidgetCategory(arguments.object);
+</cfscript>
+</cffunction>
+
+<cffunction name="actionBeforeDeleteTransferEvent" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true" default="">
+<cfscript>
+getTransferObject().actionBeforeDeleteTransferEvent(arguments.event);
+</cfscript>
+</cffunction>
+
+<cffunction name="setisActive" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="isActive" type="boolean" required="true" default="">
+<cfscript>
+getTransferObject().setisActive(arguments.isActive);
+</cfscript>
+</cffunction>
+
+<cffunction name="findWidgetCategory" access="public" returntype="numeric" default="numeric" hint="" output="false">
+<cfargument name="object" type="transfer.com.TransferObject" required="true" default="">
+<cfscript>
+return getTransferObject().findWidgetCategory(arguments.object);
+</cfscript>
+</cffunction>
+
+<cffunction name="clearWidgetCategory" access="public" returntype="void" default="void" hint="" output="false">
+<cfscript>
+getTransferObject().clearWidgetCategory();
+</cfscript>
+</cffunction>
+
+<cffunction name="containsWidgetCategory" access="public" returntype="boolean" default="boolean" hint="" output="false">
+<cfargument name="object" type="transfer.com.TransferObject" required="true" default="">
+<cfscript>
+return getTransferObject().containsWidgetCategory(arguments.object);
+</cfscript>
+</cffunction>
+
+<cffunction name="sameTransfer" access="public" returntype="boolean" default="boolean" hint="Checks to see if 2 transfer objects are the same" output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="Yes" default="">
+<cfscript>
+return getTransferObject().sameTransfer(arguments.transfer);
+</cfscript>
+</cffunction>
+
+<cffunction name="setname" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="name" type="string" required="true" default="">
+<cfscript>
+getTransferObject().setname(arguments.name);
+</cfscript>
+</cffunction>
+
+<cffunction name="sortWidgetCategory" access="public" returntype="void" default="void" hint="" output="false">
+<cfscript>
+getTransferObject().sortWidgetCategory();
+</cfscript>
+</cffunction>
+
+<cffunction name="removeParentWidgetType" access="public" returntype="void" default="void" hint="" output="false">
+<cfscript>
+getTransferObject().removeParentWidgetType();
+</cfscript>
+</cffunction>
+
+<cffunction name="actionAfterUpdateTransferEvent" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true" default="">
+<cfscript>
+getTransferObject().actionAfterUpdateTransferEvent(arguments.event);
+</cfscript>
+</cffunction>
+
+<cffunction name="getIsPersisted" access="public" returntype="boolean" default="boolean" hint="" output="false">
+<cfscript>
+return getTransferObject().getIsPersisted();
+</cfscript>
+</cffunction>
+
+<cffunction name="getParentWidgetTypeMemento" access="public" returntype="struct" default="struct" hint="returns the memento for the parent onetomany widget.WidgetType" output="false">
+<cfscript>
+return getTransferObject().getParentWidgetTypeMemento();
+</cfscript>
+</cffunction>
+
+<cffunction name="getwidgetId" access="public" returntype="numeric" default="numeric" hint="" output="false">
+<cfscript>
+return getTransferObject().getwidgetId();
+</cfscript>
+</cffunction>
+
+<cffunction name="getClassName" access="public" returntype="string" default="string" hint="The class name of the TransferObject" output="false">
+<cfscript>
+return getTransferObject().getClassName();
+</cfscript>
+</cffunction>
+
+<cffunction name="setMemento" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="memento" type="struct" required="true" default="">
+<cfscript>
+getTransferObject().setMemento(arguments.memento);
+</cfscript>
+</cffunction>
+
+<cffunction name="getname" access="public" returntype="string" default="string" hint="" output="false">
+<cfscript>
+return getTransferObject().getname();
+</cfscript>
+</cffunction>
+
+<cffunction name="getIsDirty" access="public" returntype="boolean" default="boolean" hint="" output="false">
+<cfscript>
+return getTransferObject().getIsDirty();
+</cfscript>
+</cffunction>
+
+<cffunction name="hasParentWidgetType" access="public" returntype="boolean" default="boolean" hint="" output="false">
+<cfscript>
+return getTransferObject().hasParentWidgetType();
+</cfscript>
+</cffunction>
+
+<cffunction name="getisActive" access="public" returntype="boolean" default="boolean" hint="" output="false">
+<cfscript>
+return getTransferObject().getisActive();
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategory" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="" output="false">
+<cfargument name="index" type="numeric" required="true" default="">
+<cfscript>
+return getTransferObject().getWidgetCategory(arguments.index);
+</cfscript>
+</cffunction>
+
+<cffunction name="getWidgetCategoryMemento" access="public" returntype="array" default="array" hint="returns the memento for the manytomany WidgetCategory" output="false">
+<cfscript>
+return getTransferObject().getWidgetCategoryMemento();
+</cfscript>
+</cffunction>
+
+<cffunction name="getParentWidgetType" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="" output="false">
+<cfscript>
+return getTransferObject().getParentWidgetType();
+</cfscript>
+</cffunction>
+
+<cffunction name="getMemento" access="public" returntype="struct" default="struct" hint="Returns the memento for all non-lazy members of this object" output="false">
+<cfscript>
+return getTransferObject().getMemento();
+</cfscript>
+</cffunction>
+
+<cffunction name="actionBeforeDiscardTransferEvent" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true" default="">
+<cfscript>
+getTransferObject().actionBeforeDiscardTransferEvent(arguments.event);
+</cfscript>
+</cffunction>
+
+<cffunction name="clone" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="Get a deep clone of this object" output="false">
+<cfscript>
+return getTransferObject().clone();
+</cfscript>
+</cffunction>
+
+<cffunction name="init" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="" output="false">
+<cfargument name="transfer" type="transfer.com.Transfer" required="true" default="">
+<cfargument name="utility" type="transfer.com.util.Utility" required="true" default="">
+<cfargument name="nullable" type="transfer.com.sql.Nullable" required="true" default="">
+<cfargument name="thisObject" type="transfer.com.TransferObject" required="true" default="">
+<cfscript>
+return getTransferObject().init(arguments.transfer,arguments.utility,arguments.nullable,arguments.thisObject);
+</cfscript>
+</cffunction>
+
+<cffunction name="getOriginalTransferObject" access="public" returntype="transfer.com.TransferObject" default="transfer.com.TransferObject" hint="Returns this object" output="false">
+<cfscript>
+return getTransferObject().getOriginalTransferObject();
+</cfscript>
+</cffunction>
+
+<cffunction name="setwidgetId" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="widgetId" type="numeric" required="true" default="">
+<cfscript>
+getTransferObject().setwidgetId(arguments.widgetId);
+</cfscript>
+</cffunction>
+
+<cffunction name="setParentWidgetTypeMemento" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="memento" type="struct" required="true" default="">
+<cfargument name="retrieveParent" type="boolean" required="false" default="true">
+<cfscript>
+getTransferObject().setParentWidgetTypeMemento(arguments.memento,arguments.retrieveParent);
+</cfscript>
+</cffunction>
+
+<cffunction name="actionAfterDeleteTransferEvent" access="public" returntype="void" default="void" hint="" output="false">
+<cfargument name="event" type="transfer.com.events.TransferEvent" required="true" default="">
+<cfscript>
+getTransferObject().actionAfterDeleteTransferEvent(arguments.event);
+</cfscript>
+</cffunction>
+
+<cffunction name="copyValuesTo" access="public" returntype="void" default="void" hint="Copies the values of this object to one of the same class" output="false">
+<cfargument name="transfer" type="transfer.com.TransferObject" required="true" default="">
+<cfscript>
+getTransferObject().copyValuesTo(arguments.transfer);
+</cfscript>
+</cffunction>
+
+

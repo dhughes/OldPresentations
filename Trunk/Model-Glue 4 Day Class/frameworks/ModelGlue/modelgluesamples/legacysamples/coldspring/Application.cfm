@@ -1,0 +1,1 @@
+<cfsilent><cfapplication name="ModelGlueColdSpringExample" sessionmanagement="true"/></cfsilent>
