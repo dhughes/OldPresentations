@@ -1,1 +1,1 @@
-<cfsilent><cfapplication name="FortuneComplete" sessionmanagement="true"/></cfsilent>
+<cfsilent><cfapplication name="FortuneDataAccess" sessionmanagement="true"/></cfsilent>

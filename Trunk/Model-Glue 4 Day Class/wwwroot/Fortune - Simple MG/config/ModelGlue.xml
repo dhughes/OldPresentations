@@ -4,9 +4,6 @@
 			<message-listener message="NeedFortune" function="DoGetFortune" />
 			<message-listener message="NeedCategories" function="DoGetCategories" />
 		</controller>
-		<controller name="ErrorController" type="Fortune - Simple MG.controller.ErrorController">
-			
-		</controller>
 		
 	</controllers>
   

@@ -1,3 +1,3 @@
-<cfset datasource = "Fortune">
+<cfset datasource = "FortuneProcedural">
 <cfset username = "">
 <cfset password = "">
