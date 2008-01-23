@@ -17,9 +17,15 @@ specific language governing permissions and limitations under the License.
 
 VERSION INFORMATION:
 
-This file is part of Model-Glue @versionLabel@ (@versionNumber@.@revisionNumber@).
+This file is part of Model-Glue Model-Glue: ColdFusion (2.0.304).
 
 The version number in parenthesis is in the format versionNumber.subversion.revisionNumber.
 --->
 
 
+sourceDirectory=/Library/WebServer/Documents/Model-Glue
+workingDirectory=/Library/WebServer/Documents/Model-Glue/modelgluebuilds/temp
+checkoutURL=http://svn.model-glue.com/trunk
+revisionNumber=260
+versionLabel=Working Copy
+versionNumber=2.0

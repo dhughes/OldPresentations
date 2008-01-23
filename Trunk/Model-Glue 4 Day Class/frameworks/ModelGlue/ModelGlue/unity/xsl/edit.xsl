@@ -103,10 +103,10 @@
 						&lt;cfset sourceValue = "" /&gt;
 
 						&lt;cftry&gt;
-							&lt;cfif structKeyExists(<xsl:value-of select="/object/alias"/>Record, "get<xsl:value-of select="name"/>")&gt;
-								&lt;cfset sourceValue = <xsl:value-of select="/object/alias"/>Record.get<xsl:value-of select="name"/>() /&gt;
-							&lt;cfelseif structKeyExists(<xsl:value-of select="/object/alias"/>Record, "getParent<xsl:value-of select="name"/>")&gt;
-								&lt;cfset sourceValue = <xsl:value-of select="/object/alias"/>Record.getParent<xsl:value-of select="name"/>() /&gt;
+							&lt;cfif structKeyExists(<xsl:value-of select="/object/alias"/>Record, "get<xsl:value-of select="alias"/>")&gt;
+								&lt;cfset sourceValue = <xsl:value-of select="/object/alias"/>Record.get<xsl:value-of select="alias"/>() /&gt;
+							&lt;cfelseif structKeyExists(<xsl:value-of select="/object/alias"/>Record, "getParent<xsl:value-of select="alias"/>")&gt;
+								&lt;cfset sourceValue = <xsl:value-of select="/object/alias"/>Record.getParent<xsl:value-of select="alias"/>() /&gt;
 							&lt;/cfif&gt;
 							&lt;cfcatch&gt;
 							&lt;/cfcatch&gt;

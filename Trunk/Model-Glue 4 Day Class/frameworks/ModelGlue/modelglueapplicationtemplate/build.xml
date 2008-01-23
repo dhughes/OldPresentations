@@ -19,8 +19,8 @@
 	
 -->	
 <project name="New Model-Glue Application" default="build" basedir="..">
-  	<property name="newApplicationName" value="Doug" />
-	<property name="newApplicationDirectory" value="c:/Inetpub/Presentations/Trunk/Model-Glue 3 Day For Teratech/wwwroot/${newApplicationName}" />
+  <property name="newApplicationName" value="myApplicationName" />
+	<property name="newApplicationDirectory" value="c:/inetpub/wwwroot/${newApplicationName}" />
 	<!--
     For the OS X crowd (since Joe saw the light and converted)  
 		<property name="newApplicationDirectory" value="/Library/WebServer/Documents/${newApplicationName}" />

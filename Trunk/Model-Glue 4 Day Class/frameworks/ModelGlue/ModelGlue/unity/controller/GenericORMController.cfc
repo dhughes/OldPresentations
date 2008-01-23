@@ -1,3 +1,28 @@
+<!---
+LICENSE INFORMATION:
+
+Copyright 2007, Joe Rinehart
+ 
+Licensed under the Apache License, Version 2.0 (the "License"); you may not 
+use this file except in compliance with the License. 
+
+You may obtain a copy of the License at 
+
+	http://www.apache.org/licenses/LICENSE-2.0 
+	
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+specific language governing permissions and limitations under the License.
+
+VERSION INFORMATION:
+
+This file is part of Model-Glue Model-Glue: ColdFusion (2.0.304).
+
+The version number in parenthesis is in the format versionNumber.subversion.revisionNumber.
+--->
+
+
 <cfcomponent displayName="Controller" output="false" hint="I am the controller that provides generic ORM service." extends="ModelGlue.unity.controller.Controller">
 
 <cfset variables._debug = false />
@@ -126,34 +151,41 @@
 	<!--- Create Record --->	
 	<cfset record = orm.read(table,criteria) />
 	
-	<!--- Assemble --->
-	<cfset orm.assemble(arguments.event, record) />
-
-	<!--- Validate --->
-	<cfset validation = orm.validate(table, record) />
+	<cftransaction>
+		<!--- Assemble --->
+		<cfset orm.assemble(arguments.event, record) />
 	
-	<!--- Place into state --->
-	<cfset arguments.event.setValue(recordName, record) />
+		<!--- Validate --->
+		<cfset validation = orm.validate(table, record) />
+		
+		<!--- Place into state --->
+		<cfset arguments.event.setValue(recordName, record) />
+		
+		<cfif not validation.hasErrors()>
+			<cfset orm.commit(table, record, false) />
 	
-	<cfif not validation.hasErrors()>
-		<cfset orm.commit(table, record) />
+			<!--- Place keys into state, handling common "appends" situations --->
+			<cfloop from="1" to="#arrayLen(metadata.primaryKeys)#" index="i">
+				<cfinvoke component="#record#" method="get#metadata.primaryKeys[i]#" returnvariable="tmp" />
+				<cfset arguments.event.setValue(metadata.primaryKeys[i], tmp) />
+			</cfloop>
+	
+			<!--- Flag that a commit was successful:  there's no good way to success vs. new on the client-side if the form is re-displayed --->
+			<cfset arguments.event.setValue(table & "Committed", true) />
+	
+			<cftransaction action="commit" />
 
-		<!--- Place keys into state, handling common "appends" situations --->
-		<cfloop from="1" to="#arrayLen(metadata.primaryKeys)#" index="i">
-			<cfinvoke component="#record#" method="get#metadata.primaryKeys[i]#" returnvariable="tmp" />
-			<cfset arguments.event.setValue(metadata.primaryKeys[i], tmp) />
-		</cfloop>
+			<cfset arguments.event.addResult("commit") />
+		<cfelse>
+			<cfset arguments.event.setValue(validationName, validation.getErrors()) />
+			<cfset arguments.event.setValue(table & "Committed", false) />
 
-		<!--- Flag that a commit was successful:  there's no good way to success vs. new on the client-side if the form is re-displayed --->
-		<cfset arguments.event.setValue(table & "Committed", true) />
+			<cftransaction action="rollback" />
 
-		<cfset arguments.event.addResult("commit") />
-	<cfelse>
-		<cfset arguments.event.setValue(validationName, validation.getErrors()) />
-		<cfset arguments.event.setValue(table & "Committed", false) />
-		<cfset arguments.event.addResult("validationError") />
-	</cfif>
-
+			<cfset arguments.event.addResult("validationError") />
+		</cfif>
+	</cftransaction>
+	
 </cffunction>
 
 <cffunction name="genericDelete" access="public" returntype="void" output="false">
@@ -168,7 +200,10 @@
 		<cfset criteria[i] = arguments.event.getValue(i) />
 	</cfloop>
 	
-	<cfset getOrmAdapter().delete(table, criteria) />
+	<cftransaction>
+		<cfset getOrmAdapter().delete(table, criteria, false) />
+		<cftransaction action="commit" />
+	</cftransaction>
 </cffunction>
 
 </cfcomponent>

@@ -1,6 +1,31 @@
+<!---
+LICENSE INFORMATION:
+
+Copyright 2007, Joe Rinehart
+ 
+Licensed under the Apache License, Version 2.0 (the "License"); you may not 
+use this file except in compliance with the License. 
+
+You may obtain a copy of the License at 
+
+	http://www.apache.org/licenses/LICENSE-2.0 
+	
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+specific language governing permissions and limitations under the License.
+
+VERSION INFORMATION:
+
+This file is part of Model-Glue Model-Glue: ColdFusion (2.0.304).
+
+The version number in parenthesis is in the format versionNumber.subversion.revisionNumber.
+--->
+
+
 Model-Glue
 Joe Rinehart (joe.rinehart@gmail.com)
-Model-Glue @versionLabel@ (@versionNumber@.@revisionNumber@).
+Model-Glue Model-Glue: ColdFusion (2.0.304).
 
 Well, now you've gone and done it.  
 
@@ -26,17 +51,15 @@ If you're impatient, this should get you started:
 
 You may need to point a mapping named /coldspring to the directory that *contains* a folder named "beans".
 
-2. Copy the /Reactor/reactor folder to whatever ColdFusion sees as "/Reactor".  The framework is now installed.  
-
-You may need to point a mapping named /reactor to the directory (/Reactor/reactor) that contains reactorFactory.cfc.
-
-3. Copy the ModelGlue folder to whatever ColdFusion sees as "/ModelGlue".  The framework is now installed.  
+2. Copy the ModelGlue (inside the same directory as this file) folder to whatever ColdFusion sees as "/ModelGlue".  The framework is now installed.  
 
 You may need to point a mapping named /ModelGlue to the directory (/ModelGlue) that contains ModelGlue.cfm.
 
-4. Copy the modelgluesamples folder to /modelgluesamples.  The samples are now installed.
+3. Copy the modelgluesamples folder to /modelgluesamples.  The samples are now installed.
 
-5. Run some samples - try http://[host]/modelgluesamples/legacysamples/nameuppercaser or http://[host]/modelgluesamples/legacysamples/contactmanager.
+4. Run some samples - try http://[host]/modelgluesamples/legacysamples/nameuppercaser or http://[host]/modelgluesamples/legacysamples/contactmanager.
+
+5. If you want to use Reactor or Transfer to do scaffolding and automatic database integration, see the instructions in the application template's ColdSpring.xml file for configuring your ORM of choice.  Then, check out "How to Use Generic Database Messages" and "How to Use Scaffolds" under the How To's section of the documentation.
 
 ** WHEN THINGS BREAK **
 
@@ -45,13 +68,6 @@ Visit http://trac.model-glue.com, click the "New Ticket" button, and fill out th
 1.  Exactly what you did
 2.  What happened (include exceptions, stack traces, sample code, etc.!)
 3.  What you thought should of happened
-
-** BETA DISCLOSURE **
-
-This is beta software.  It's going to break down here and there.  There's even a few features (like request pool size control and hierarchial bean factories) that aren't even implemented.
-
-If something doesn't work, please follow the 'WHEN THINGS BREAK' directions:  it will get fixed.
-
 
 ** LICENSE INFORMATION **
 

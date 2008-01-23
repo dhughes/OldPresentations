@@ -1,6 +1,29 @@
+<!---
+LICENSE INFORMATION:
 
-<cfcomponent extends="ModelGlue.unity.orm.AbstractORMAdapter" 
-			hint="I am a concrete implementation of a Model-Glue ORM adapter.">
+Copyright 2007, Joe Rinehart
+ 
+Licensed under the Apache License, Version 2.0 (the "License"); you may not 
+use this file except in compliance with the License. 
+
+You may obtain a copy of the License at 
+
+	http://www.apache.org/licenses/LICENSE-2.0 
+	
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+specific language governing permissions and limitations under the License.
+
+VERSION INFORMATION:
+
+This file is part of Model-Glue Model-Glue: ColdFusion (2.0.304).
+
+The version number in parenthesis is in the format versionNumber.subversion.revisionNumber.
+--->
+
+
+<cfcomponent extends="ModelGlue.unity.orm.AbstractORMAdapter" hint="I am a concrete implementation of a Model-Glue ORM adapter.">
 
 <cffunction name="init" returntype="TransferAdapter" output="true" access="public" 
 			hint="I am the constructor.">
@@ -141,7 +164,7 @@
 		<cfset md[fields[i].alias].comment = dict.getValue("#arguments.table#.#fields[i].alias#.comment") />
 	
 		<cfif fields[i].primaryKey>
-			<cfset arrayAppend(result.primaryKeys, fields[i].name) />
+			<cfset arrayAppend(result.primaryKeys, fields[i].alias) />
 		</cfif>
 			
 		<cfset arrayAppend(properties, md[fields[i].alias]) />
@@ -542,7 +565,7 @@
 					<cfif isStruct(currentChildren)>
 						<cfif not property.linkingRelationship>
 							<cfinvoke component="#currentChildren[currentChildId]#" method="removeParent#objectName#" />
-							<cfset getTransfer().save(currentChildren[currentChildId]) />
+							<cfset getTransfer().save(currentChildren[currentChildId], false) />
 						<cfelse>
 							<cfinvoke component="#record#" method="remove#listLast(property.sourceObject, ".")#">
 								<cfinvokeargument name="object" value="#currentChildren[currentChildId]#" />
@@ -554,7 +577,7 @@
 							<cfif testedChildId eq currentChildId>
 								<cfif not property.linkingRelationship>
 									<cfinvoke component="#currentChildren[j]#" method="removeParent#objectName#" />
-									<cfset getTransfer().save(currentChildren[j]) />
+									<cfset getTransfer().save(currentChildren[j], false) />
 								<cfelse>
 									<cfinvoke component="#record#" method="remove#listLast(property.sourceObject, ".")#">
 										<cfinvokeargument name="object" value="#currentChildren[j]#" />
@@ -576,7 +599,7 @@
 						<cfinvoke component="#currentChild#" method="setParent#objectName#">
 							<cfinvokeargument name="transfer" value="#record#" />
 						</cfinvoke>
-						<cfset getTransfer().save(currentChild) />
+						<cfset getTransfer().save(currentChild, false) />
 					<cfelse>
 						<cfinvoke component="#record#" method="add#listLast(property.sourceObject, ".")#">
 							<cfinvokeargument name="object" value="#currentChild#" />
@@ -593,16 +616,18 @@
 <cffunction name="commit" returntype="any" output="false" access="public">
 	<cfargument name="table" type="string" required="true" />
 	<cfargument name="record" type="any" required="true" />
+	<cfargument name="useTransaction" type="any" required="false" default="true" />
 	
-	<cfset getTransfer().save(arguments.record) />
+	<cfset getTransfer().save(arguments.record,  arguments.useTransaction) />
 </cffunction>
 
 <cffunction name="delete" returntype="any" output="false" access="public">
 	<cfargument name="table" type="string" required="true" />
 	<cfargument name="primaryKeys" type="struct" required="true" />
+	<cfargument name="useTransaction" type="any" required="false" default="true" />
 	
 	<cfset var record = read(arguments.table, arguments.primaryKeys) />
-	<cfset getTransfer().delete(record) />
+	<cfset getTransfer().delete(record, arguments.useTransaction) />
 
 </cffunction>
 

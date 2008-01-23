@@ -1,3 +1,28 @@
+<!---
+LICENSE INFORMATION:
+
+Copyright 2007, Joe Rinehart
+ 
+Licensed under the Apache License, Version 2.0 (the "License"); you may not 
+use this file except in compliance with the License. 
+
+You may obtain a copy of the License at 
+
+	http://www.apache.org/licenses/LICENSE-2.0 
+	
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
+CONDITIONS OF ANY KIND, either express or implied. See the License for the 
+specific language governing permissions and limitations under the License.
+
+VERSION INFORMATION:
+
+This file is part of Model-Glue Model-Glue: ColdFusion (2.0.304).
+
+The version number in parenthesis is in the format versionNumber.subversion.revisionNumber.
+--->
+
+
 <cfcomponent displayname="ReactorAdapter" hint="I am a conrete implementation of a Model-Glue ORM adapter." extends="ModelGlue.unity.orm.AbstractORMAdapter">
 
 <cffunction name="init" returntype="ModelGlue.unity.orm.ReactorAdapter" output="true" access="public">
@@ -9,7 +34,7 @@
 	<cftry>
 		<cfset tmp = arguments.framework.getNativeBean("reactorConfiguration") />
 		<cfcatch>
-			<cfset arguments.framework.setUseORMAdapter("false", "No reactorConfiguration bean is present.") />
+			<cfset arguments.framework.setUseORMAdapter("false", "Reactor failed to load: #cfcatch.type# : #cfcatch.message# : #cfcatch.detail#") />
 		</cfcatch>
 	</cftry>
 		
@@ -46,6 +71,12 @@
 	</cfif>
 
 	<cfreturn variables._reactor />
+</cffunction>
+
+<cffunction name="getObjectFields" access="private" output="false" returntype="string" >
+	<cfargument name="table" type="string" required="true" />
+	<cfset var fields = getReactor().createMetadata(arguments.table).getFieldQuery() />
+	<cfreturn valueList(fields.alias) />
 </cffunction>
 
 <cffunction name="getObjectMetadata" returntype="struct" output="true" access="public">
@@ -247,20 +278,14 @@
 	<cfset var i = "" />
 	
 	<cfif not structKeyExists(variables._cpCache, arguments.table)>
-		<cfset md = getObjectMetadata(arguments.table) />
+		<cfset md = getObjectFields(arguments.table) />
 		
-		<cfloop collection="#md.properties#" item="i">
-			<cfif not md.properties[i].relationship>
-					<cfset result = listAppend(result, i) />
-			</cfif>
-		</cfloop>
-
 		<cfset variables._cpCache[arguments.table] = result />		
 	<cfelse>
 		<cfset result = variables._cpCache[arguments.table] />
 	</cfif>
 	
-	<cfreturn result />
+	<cfreturn getObjectFields(arguments.table) />
 </cffunction>
 
 <cffunction name="determineSource" returntype="void" output="false" access="private">
@@ -399,13 +424,13 @@
 	<cfset var i = "" />
 	<cfset var record = new(arguments.table) />	
 
-	<cfloop collection="#primaryKeys#" item="i">
+	<!--- <cfloop collection="#primaryKeys#" item="i">
 		<cfinvoke component="#record#" method="set#i#">
 			<cfinvokeargument name="#i#" value="#primaryKeys[i]#" />
 		</cfinvoke>
-	</cfloop>
+	</cfloop> --->
 
-	<cfset record.load() />
+	<cfset record.load(argumentCollection=primaryKeys) />
 	
 	<cfreturn record />
 </cffunction>
@@ -467,6 +492,7 @@
 		
 	<!--- Manage plural relationship properties --->
 	<cfloop collection="#metadata.properties#" item="i">
+		<cfset deletionQueue = arrayNew(1) />
 		<!--- Only do this if the property is a plural relationship and the form contains the needed value --->
 		<cfif metadata.properties[i].relationship eq true 
 					and metadata.properties[i].pluralrelationship
@@ -485,6 +511,7 @@
 			<cfloop condition="currentChildren.hasMore()">
 				<cfset childRecord = currentChildren.getNext() />
 				<cfinvoke component="#childRecord#" method="get#metadata.properties[i].sourceKey#" returnvariable="currentChildId">
+				
 				<cfif not listFindNoCase(selectedChildIds, currentChildId)>
 					
 					<!--- If it's a linking relationship, we want to remove the link:  queue criteria --->
@@ -497,15 +524,15 @@
 						<cfinvoke component="#childRecord#" method="set#metadata.properties[i].sourceTableForeignKey#">
 							<cfinvokeargument name="#metadata.properties[i].sourceTableForeignKey#" value="" />
 						</cfinvoke>
-						<cfset orm.commit(table, record) />
+						<cfset commit(table, record, false) />
 					</cfif>
 				</cfif>
 			</cfloop>
 
 			<cfloop from="1" to="#arrayLen(deletionQueue)#" index="j">
-				<cfset currentChildren.delete(argumentCollection=deletionQueue[j]) />
+				<cfset currentChildren.delete(argumentCollection=deletionQueue[j], useTransaction=false) />
 			</cfloop>
-			
+				
 			<!--- Add any selected children to the currentChildren, adding any new children --->
 			<cfloop list="#selectedChildIds#" index="selectedChildId">
 				<cfif not listFindNoCase(currentChildIds, selectedChildId)>
@@ -522,15 +549,17 @@
 <cffunction name="commit" returntype="any" output="false" access="public">
 	<cfargument name="table" type="string" required="true" />
 	<cfargument name="record" type="any" required="true" />
+	<cfargument name="useTransaction" type="any" required="false" default="true" />
 	
-	<cfset record.save() />
+	<cfset record.save(arguments.useTransaction) />
 </cffunction>
 
 <cffunction name="delete" returntype="any" output="false" access="public">
 	<cfargument name="table" type="string" required="true" />
 	<cfargument name="primaryKeys" type="struct" required="true" />
+	<cfargument name="useTransaction" type="any" required="false" default="true" />
 	<cfset var record = read(arguments.table, arguments.primaryKeys) />
-	<cfset record.delete() />
+	<cfset record.delete(arguments.useTransaction) />
 </cffunction>
 
 </cfcomponent>
