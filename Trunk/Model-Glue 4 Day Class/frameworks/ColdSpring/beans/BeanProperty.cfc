@@ -15,7 +15,7 @@
   limitations under the License.
 		
 			
- $Id: BeanProperty.cfc,v 1.15 2006/06/25 13:20:32 rossd Exp $
+ $Id: BeanProperty.cfc,v 1.21 2007/11/22 20:55:58 scottc Exp $
 
 ---> 
 
@@ -25,26 +25,34 @@
 			output="false">
 
 	<cfset variables.instanceData = StructNew() />
+	<cfset variables.propertyDef = "" />
 
 	<cffunction name="init" returntype="coldspring.beans.BeanProperty" access="public" output="false"
 				hint="Constructor. Creates a new Bean Property.">
 		<cfargument name="propertyDefinition" type="any" required="true" hint="CF xml object that defines what I am" />
 		<cfargument name="parentBeanDefinition" type="coldspring.beans.BeanDefinition" hint="reference to the bean definition that I'm being added to" />
 		
+		<cfset variables.propertyDefinition = arguments.propertyDefinition />
 		<cfset setParentBeanDefinition(arguments.parentBeanDefinition) />
 		<cfset parsePropertyDefinition(arguments.propertyDefinition) />
 		
 		<cfreturn this />
 	</cffunction>
 	
+	<cffunction name="resolvePropertyPlaceholders" access="public" returntype="void" output="false">
+		<cfargument name="properties" type="struct" required="true" hint="properties struct, passed in by a postProcessor" />
+		<cfset parsePropertyDefinition(variables.propertyDefinition, arguments.properties) />
+	</cffunction>
+	
 	<cffunction name="parsePropertyDefinition" access="private" returntype="void" output="false"
 				hint="I parse the CF xml object that defines what I am ">
 		<cfargument name="propertyDef" type="any" required="true" hint="property definition xml" />
+		<cfargument name="properties" type="struct" required="false" hint="properties struct, passed in by a postProcessor" />
 		<cfset var child = 0 />
 		<cfset var beanUID = 0 />
 		<cfset var propName = ""/>
 		
-		<!-- <!---  not (StructKeyExists(propertyDef.XmlAttributes,'name') and ---> -->
+		<!---  not (StructKeyExists(propertyDef.XmlAttributes,'name') and --->
 		<cfif not (StructKeyExists(propertyDef,'XmlChildren')
 			  	and ArrayLen(arguments.propertyDef.XmlChildren))>
 			<cfthrow type="coldspring.MalformedPropertyException" message="Xml properties must contain a 'name' and a child element!">
@@ -68,13 +76,18 @@
 		<cfset setType(child.XmlName) />
 		
 		<!--- ok now parse the definition of my child --->
-		<cfset parseChildNode(child)/>
+		<cfif StructKeyExists(arguments, "properties")>
+			<cfset parseChildNode(child, arguments.properties)/>
+		<cfelse>
+			<cfset parseChildNode(child)/>
+		</cfif>
 			
 	</cffunction>
 
 	<cffunction name="parseChildNode" access="private" returntype="void" output="false"
 				hint="I parse the child of this property">
 		<cfargument name="childNode" type="any" required="true" hint="child xml" />
+		<cfargument name="properties" type="struct" required="false" hint="properties struct, passed in by a postProcessor" />
 		
 		<cfset var child = arguments.childNode />
 		<cfset var initMethod = ""/>
@@ -82,6 +95,7 @@
 		<cfset var entryFactoryMethod = ""/>
 		<cfset var entryFactoryBean = ""/>	
 		<cfset var entryAutowire = ""/>
+		<cfset var entryParent = "" />
 		
 		<!--- based on the type of property
 			perhaps we should switch on #getType()# instead? --->
@@ -95,70 +109,38 @@
 			</cfcase>
 			
 			<cfcase value="bean">
-				<!--- this is an "inner-bean", e.g. a <bean/> tag within a <property/> or <constructor-arg/> 
-					  note that inner-beans are "anonymous" prototypes, they are not available to be retrieved from the bean factory
-					  this is done via obscurity: we register the bean by a UUID				
-				--->								
-				<cfif not (StructKeyExists(child.XmlAttributes,'class'))
-					  and not
-					  	(
-					  		StructKeyExists(child.XmlAttributes,'factory-bean')
-					  	and
-					  		StructKeyExists(child.XmlAttributes,'factory-method')
-					  	)  >
-					<cfthrow type="coldspring.MalformedInnerBeanException" message="Xml inner bean definitions must contain a 'class' attribute or 'factory-bean'/'factory-method' attributes!">
-				</cfif>
-				
-				<!--- check for an init-method --->
-				<cfif StructKeyExists(child.XmlAttributes,'init-method') and len(child.XmlAttributes['init-method'])>
-					<cfset initMethod = child.XmlAttributes['init-method'] />
-				<cfelse>
-					<cfset initMethod = ""/>
-				</cfif>
-				
-				<!--- since the inner bean may be created via. factory-method, it might not have a class --->
-				<cfif StructKeyExists(child.XmlAttributes,'class') and len(child.XmlAttributes['class'])>
-					<cfset entryClass = child.XmlAttributes['class'] />
-				<cfelse>
-					<cfset entryClass = ""/>
-				</cfif>
-				
-				<cfif StructKeyExists(child.XmlAttributes,'factory-method') and len(child.XmlAttributes['factory-method'])>
-					<cfset entryFactoryMethod = child.XmlAttributes['factory-method'] />
-					<cfset entryFactoryBean = child.XmlAttributes['factory-bean'] />						
-				<cfelse>
-					<cfset entryFactoryMethod = ""/>
-					<cfset entryFactoryBean = ""/>						
-				</cfif>					
-
-				<!--- look for an autowire attribute for this bean def --->
-				<cfif StructKeyExists(child.XmlAttributes,'autowire') and listFind('byName,byType',child.XmlAttributes['autowire'])>
-					<cfset entryAutowire = child.XmlAttributes['autowire'] />
-				<cfelse>
-					<cfset entryAutowire = '' />
-				</cfif>
-				
-				<!--- create uid for new Bean, store as value for lookup --->
-				<cfset beanUID = CreateUUID() />
-				
+				<!--- createInnerBeanDefinition now takes care of all the xml parsing and returns new beanUId --->
+				<cfset beanUID = createInnerBeanDefinition(child) />
 				<!--- set the internal value of this property to be the inner bean's ID --->
 				<cfset setValue(beanUID) />
-				
-				<!--- create the new bean definition via the beanFactory (see createInnerBeanDefinition) --->
-				<cfset createInnerBeanDefinition(beanUID, entryClass, child.XmlChildren, initMethod,entryFactoryBean, entryFactoryMethod, entryAutowire) />
-				
 				<!--- and of course, add it to the dependency list for my parent definition --->
 				<cfset addParentDefinitionDependency(beanUID) />
 			</cfcase>
 			
 			<cfcase value="list,map">
 				<!--- list + map properties get special parsing, set our internal "value" to be the result --->
-				<cfset setValue(parseEntries(child.xmlChildren,child.xmlName)) />
+				<cfif StructKeyExists(arguments, "properties")>
+					<cfif len(child.xmlText) gt 2 and left(child.xmlText,2) eq "${">
+						<cfset setValue(parseEntries(child.xmlText,child.xmlName,arguments.properties)) />
+					<cfelse>
+						<cfset setValue(parseEntries(child.xmlChildren,child.xmlName,arguments.properties)) />
+					</cfif>
+				<cfelse>
+					<cfif len(child.xmlText) gt 2 and left(child.xmlText,2) eq "${">
+						<cfset setValue(parseEntries(child.xmlText,child.xmlName)) />
+					<cfelse>
+						<cfset setValue(parseEntries(child.xmlChildren,child.xmlName)) />
+					</cfif>
+				</cfif>
 			</cfcase>
 			
 			<cfcase value="value">
 				<!--- parse the value and set our internal "value" to be the result --->
-				<cfset setValue(parseValue(child.xmlText)) />
+				<cfif StructKeyExists(arguments, "properties")>
+					<cfset setValue(parseValue(child.xmlText, arguments.properties)) />
+				<cfelse>
+					<cfset setValue(parseValue(child.xmlText)) />
+				</cfif>
 			</cfcase>
 			
 		</cfswitch>
@@ -167,24 +149,50 @@
 	<cffunction name="parseValue" access="private" returntype="string" output="false"
 				hint="I parse a <value/>">
 		<cfargument name="rawValue" type="string" required="true" />
+		<cfargument name="properties" type="struct" required="false" hint="properties struct, passed in by a postProcessor" />
 		
-		<!--- grab the default properties out of the enclosing bean factory --->
-		<cfset var beanFactoryDefaultProperties = getParentBeanDefinition().getBeanFactory().getDefaultProperties() />
+		<cfset var beanFactoryDefaultProperties = 0 />
+		<!--- propertyPlaceholder --->
+		<cfset var propertyPlaceholder = ""/>
+		
 		<!--- resolve anything that looks like it should get replaced with a beanFactory default property --->
-		<cfif left(rawValue,2) eq "${" and right(rawValue,1) eq "}">
-			<!--- look for this property value in the bean factory (using isDefined/evaluate incase of "." in property name--->
-			<cfif isDefined("beanFactoryDefaultProperties.#mid(rawValue,3,len(rawValue)-3)#")>
+		<cfif left(rawValue,2) eq "${" and right(rawValue,1) eq "}">=
+			<!--- grab the default properties out of the enclosing bean factory --->
+			<cfset beanFactoryDefaultProperties = getParentBeanDefinition().getBeanFactory().getDefaultProperties() />
+			<cfset propertyPlaceholder = mid(rawValue,3,len(rawValue)-3)/>
+			<!--- look for this property value in the bean factory (using isDefined/evaluate incase of "." in property name)
+				OR look for the property in the passed in struct ( do that first, as we may be postProcessing ) --->
+			<cfif StructKeyExists(arguments, "properties")>
+				<cfif StructKeyExists(arguments.properties, propertyPlaceholder) and isSimpleValue(arguments.properties[propertyPlaceholder])>
+					<cfreturn arguments.properties[propertyPlaceholder] />
+				<cfelse>
+					<cfthrow type="BeanProperty.PlaceholderTypeError" message="The supplied value for property placeholder #propertyPlaceholder# is not a simple type. This error occured while processing a beanFactoryPostProcessor!"/>
+				</cfif>
+				<!---
+				<cfif isDefined("arguments.properties.#mid(rawValue,3,len(rawValue)-3)#")>
+					<cfreturn evaluate("arguments.properties.#mid(rawValue,3,len(rawValue)-3)#")/>
+				</cfif>	
+			<cfelseif isDefined("beanFactoryDefaultProperties.#mid(rawValue,3,len(rawValue)-3)#")>
 				<cfreturn evaluate("beanFactoryDefaultProperties.#mid(rawValue,3,len(rawValue)-3)#")/>
-			</cfif>		
+			</cfif> --->
+			<cfelseif StructKeyExists(beanFactoryDefaultProperties, propertyPlaceholder)>
+				<cfif isSimpleValue(beanFactoryDefaultProperties[propertyPlaceholder])>
+					<cfreturn beanFactoryDefaultProperties[propertyPlaceholder] />
+				<cfelse>
+					<cfthrow type="BeanProperty.PlaceholderTypeError" message="The supplied value for property placeholder #propertyPlaceholder# is not a simple type. This error occured while while resolving properties with the default bean factory properties!"/>
+				</cfif>
+			</cfif>
 		</cfif>
+		
 		<cfreturn rawValue />
 	</cffunction>
 	
 	
 	<cffunction name="parseEntries" access="private" returntype="any" output="false"
 				hint="parses complex properties, limited to <map/> and <list/>. Should return either an array or an struct.">
-		<cfargument name="mapEntries" type="array" required="true" hint="xml of child nodes for this complex type" />
+		<cfargument name="mapEntries" type="any" required="true" hint="xml of child nodes for this complex type" />
 		<cfargument name="returnType" type="string" required="true" hint="type of property (list|map)" />
+		<cfargument name="properties" type="struct" required="false" hint="properties struct, passed in by a postProcessor" />
 		
 		<!--- local vars --->
 		<cfset var rtn = 0 />
@@ -192,12 +200,34 @@
 		<cfset var entry = 0/>
 		<cfset var entryChild = 0/>
 		<cfset var entryKey = 0/>
-		<cfset var entryBeanID = 0/>
-		<cfset var initMethod = ""/>
-		<cfset var entryClass = ""/>
-		<cfset var entryFactoryMethod = ""/>
-		<cfset var entryFactoryBean = ""/>		
-		<cfset var entryAutowire = ""/>
+		<cfset var beanFactoryDefaultProperties = 0 />
+		<cfset var propertyPlaceholder = ""/>
+		
+		<!--- OK, this is for Peter and MachII, perhapse property placeholders can work for maps and arrays too --->
+		<!--- resolve anything that looks like it should get replaced with a beanFactory default property --->
+		<cfif isSimpleValue(mapEntries) and left(mapEntries,2) eq "${" and right(mapEntries,1) eq "}">
+			<!--- grab the default properties out of the enclosing bean factory --->
+			<cfset beanFactoryDefaultProperties = getParentBeanDefinition().getBeanFactory().getDefaultProperties() />
+			<cfset propertyPlaceholder = mid(mapEntries,3,len(mapEntries)-3)/>
+			<!--- look for this property value in the bean factory (using isDefined/evaluate incase of "." in property name)
+				OR look for the property in the passed in struct ( do that first, as we may be postProcessing ) --->
+			<cfif StructKeyExists(arguments, "properties")>
+				<cfif StructKeyExists(arguments.properties, propertyPlaceholder) and 
+						((returnType eq "list" and isArray(arguments.properties[propertyPlaceholder])) or 
+						 (returnType eq "map" and isStruct(arguments.properties[propertyPlaceholder])))>
+					<cfreturn arguments.properties[propertyPlaceholder] />
+				<cfelse>
+					<cfthrow type="BeanProperty.PlaceholderTypeError" message="The supplied value for property placeholder #propertyPlaceholder# is not of type #returnType#. This error occured while processing a beanFactoryPostProcessor!"/>
+				</cfif>
+			<cfelseif StructKeyExists(beanFactoryDefaultProperties, propertyPlaceholder)>
+				<cfif (returnType eq "list" and isArray(beanFactoryDefaultProperties[propertyPlaceholder])) or 
+					 (returnType eq "map" and isStruct(beanFactoryDefaultProperties[propertyPlaceholder]))>
+					<cfreturn beanFactoryDefaultProperties[propertyPlaceholder] />
+				<cfelse>
+					<cfthrow type="BeanProperty.PlaceholderTypeError" message="The supplied value for property placeholder #propertyPlaceholder# is not of type #returnType#. This error occured while while resolving properties with the default bean factory properties!"/>
+				</cfif>
+			</cfif>
+		</cfif>
 	
 		<!--- what are we gonna return, a struct or an array (e.g. are we parsing a <map/> or a <list/> --->
 		<cfif returnType eq 'map'>
@@ -238,7 +268,11 @@
 				
 				<cfcase value="value">
 					<!--- easy, just put in your parsed value --->
-					<cfset rtn[entryKey] = parseValue(entryChild.xmlText) />
+					<cfif StructKeyExists(arguments, "properties")>
+						<cfset rtn[entryKey] = parseValue(entryChild.xmlText, arguments.properties) />
+					<cfelse>
+						<cfset rtn[entryKey] = parseValue(entryChild.xmlText) />
+					</cfif>
 				</cfcase>
 				
 				<!--- for <ref/> and <bean/> elements within complex properties, we need make a 'placeholder'
@@ -257,58 +291,21 @@
 				</cfcase>
 				
 				<cfcase value="bean">
-					<!--- we gotta do the inner bean creation thing again. See parseChildNode above to figure out what's going on here --->
-					<cfif not (StructKeyExists(entryChild.XmlAttributes,'class'))
-						and not
-					  	(
-					  		StructKeyExists(child.XmlAttributes,'factory-bean')
-					  	and
-					  		StructKeyExists(child.XmlAttributes,'factory-method')
-					  	)  >
-						<cfthrow type="coldspring.MalformedInnerBeanException" message="Xml inner bean definitions must contain a 'class' attribute or 'factory-bean'/'factory-method' attributes!">
-					</cfif>
-					<!--- create uid for new Bean, store as value for lookup --->
-					<cfset entryBeanID = CreateUUID() />
+					<!--- createInnerBeanDefinition now takes care of all the xml parsing and returns new beanUId --->
+					<cfset entryBeanID = createInnerBeanDefinition(entryChild) />
 					<cfset rtn[entryKey] = createObject("component","coldspring.beans.BeanReference").init(
 																									entryBeanID
 																										)/>
-					
-					<cfif StructKeyExists(entryChild.XmlAttributes,'init-method') and len(entryChild.XmlAttributes['init-method'])>
-						<cfset initMethod = entryChild.XmlAttributes['init-method'] />
-					<cfelse>
-						<cfset initMethod = ""/>
-					</cfif>
-					
-					<!--- since the inner bean may be created via. factory-method, it might not have a class --->
-					<cfif StructKeyExists(entryChild.XmlAttributes,'class') and len(entryChild.XmlAttributes['class'])>
-						<cfset entryClass = entryChild.XmlAttributes['class'] />
-					<cfelse>
-						<cfset entryClass = ""/>
-					</cfif>
-					
-					<cfif StructKeyExists(entryChild.XmlAttributes,'factory-method') and len(entryChild.XmlAttributes['factory-method'])>
-						<cfset entryFactoryMethod = entryChild.XmlAttributes['factory-method'] />
-						<cfset entryFactoryBean = entryChild.XmlAttributes['factory-bean'] />						
-					<cfelse>
-						<cfset entryFactoryMethod = ""/>
-						<cfset entryFactoryBean = ""/>						
-					</cfif>					
-				
-					<!--- look for an autowire attribute for this bean def --->
-					<cfif StructKeyExists(entryChild.XmlAttributes,'autowire') and listFind('byName,byType',entryChild.XmlAttributes['autowire'])>
-						<cfset entryAutowire = entryChild.XmlAttributes['autowire'] />
-					<cfelse>
-						<cfset entryAutowire = '' />
-					</cfif>
-				
-					<!--- set flag to create bean definition and add to store --->
-					<cfset createInnerBeanDefinition(entryBeanID, entryClass, entryChild.XmlChildren, initMethod,entryFactoryBean,entryFactoryMethod,entryAutowire) />
 					<cfset addParentDefinitionDependency(entryBeanID) />
 				</cfcase>					
 				
 				<cfcase value="map,list">
 					<!--- recurse if we find another complex property --->
-					<cfset rtn[entryKey] = parseEntries(entryChild.xmlChildren,entryChild.xmlName) />											
+					<cfif StructKeyExists(arguments, "properties")>
+						<<cfset rtn[entryKey] = parseEntries(entryChild.xmlChildren,entryChild.xmlName, arguments.properties) />
+					<cfelse>
+						<cfset rtn[entryKey] = parseEntries(entryChild.xmlChildren,entryChild.xmlName) />
+					</cfif>										
 				</cfcase>
 			</cfswitch>
 		</cfloop>
@@ -334,8 +331,10 @@
 		<cfset variables.instanceData.parentBeanDefinition = arguments.parentBeanDefinition />
 	</cffunction>
 	
-	<cffunction name="createInnerBeanDefinition" access="public" returntype="void" output="false"
+	<cffunction name="createInnerBeanDefinition" access="public" returntype="uuid" output="false"
 				hint="creates a new inner bean within the BeanFactory">
+		<cfargument name="beanXml" type="any" required="true" hint="bean xml" />
+		<!---
 		<cfargument name="beanID" type="string" required="true" />
 		<cfargument name="beanClass" type="string" required="true" />
 		<cfargument name="children" type="any" required="true" />
@@ -343,14 +342,80 @@
 		<cfargument name="factoryBean" type="string" default="" required="false" />
 		<cfargument name="factoryMethod" type="string" default="" required="false" />
 		<cfargument name="autoWire" type="string" default="" required="false" />
+		<cfargument name="parent" type="string" default="" required="false" /> --->
 		
-		<!--- if autowire isn't defined then inherit from the parent beanDef --->
-		<cfif not len(arguments.autoWire)>
-			<cfset arguments.autoWire = getParentBeanDefinition().getAutoWire()/>
+		<cfset var beanProps = StructNew() />
+		<!--- create uid for new Bean, store as value for lookup --->
+		<cfset beanProps.beanID = CreateUUID() />
+		
+		<!--- this is an "inner-bean", e.g. a <bean/> tag within a <property/> or <constructor-arg/> 
+			  note that inner-beans are "anonymous" prototypes, they are not available to be retrieved from the bean factory
+			  this is done via obscurity: we register the bean by a UUID				
+		--->								
+		<cfif not (StructKeyExists(arguments.beanXml.XmlAttributes,'class'))
+			  and not
+			  	(
+			  		StructKeyExists(arguments.beanXml.XmlAttributes,'factory-bean')
+			  	and
+			  		StructKeyExists(arguments.beanXml.XmlAttributes,'factory-method')
+			  	)  >
+			<cfthrow type="coldspring.MalformedInnerBeanException" message="Xml inner bean definitions must contain a 'class' attribute or 'factory-bean'/'factory-method' attributes!">
+		</cfif>
+		
+		<!--- check for an init-method --->
+		<cfif StructKeyExists(arguments.beanXml.XmlAttributes,'init-method') and len(arguments.beanXml.XmlAttributes['init-method'])>
+			<cfset beanProps.initMethod = arguments.beanXml.XmlAttributes['init-method'] />
+		<cfelse>
+			<cfset beanProps.initMethod = ""/>
+		</cfif>
+		
+		<!--- since the inner bean may be created via. factory-method, it might not have a class --->
+		<cfif StructKeyExists(arguments.beanXml.XmlAttributes,'class') and len(arguments.beanXml.XmlAttributes['class'])>
+			<cfset beanProps.class = arguments.beanXml.XmlAttributes['class'] />
+		<cfelse>
+			<cfset beanProps.class = ""/>
+		</cfif>
+		
+		<cfif StructKeyExists(arguments.beanXml.XmlAttributes,'factory-method') and len(arguments.beanXml.XmlAttributes['factory-method'])>
+			<cfset beanProps.factoryMethod = arguments.beanXml.XmlAttributes['factory-method'] />
+			<cfset beanProps.factoryBean = arguments.beanXml.XmlAttributes['factory-bean'] />						
+		<cfelse>
+			<cfset beanProps.factoryMethod = ""/>
+			<cfset beanProps.factoryBean = ""/>						
+		</cfif>					
+
+		<!--- look for an autowire attribute for this bean def --->
+		<cfif StructKeyExists(arguments.beanXml.XmlAttributes,'autowire') and listFind('byName,byType',arguments.beanXml.XmlAttributes['autowire'])>
+			<cfset beanProps.autowire = arguments.beanXml.XmlAttributes['autowire'] />
+		<cfelse>
+			<cfset beanProps.autowire = getParentBeanDefinition().getAutoWire()/>
+		</cfif>
+		
+		<!--- look for a parent attribute --->
+		<cfif StructKeyExists(arguments.beanXml.XmlAttributes,'parent')>
+			<cfset beanProps.parent = arguments.beanXml.XmlAttributes['parent'] />
+		<cfelse>
+			<cfset beanProps.parent = "" />
 		</cfif>
 		
 		<!--- call parent's bean factory to create new bean definition (inherit autowiring from it's parent for now)--->
-		<cfset getParentBeanDefinition().getBeanFactory().createBeanDefinition(arguments.beanID, arguments.beanClass, arguments.children, false, true, arguments.initMethod,arguments.factoryBean,arguments.factoryMethod,arguments.autoWire)/>
+		<cfset getParentBeanDefinition().getBeanFactory().createBeanDefinition(beanProps.beanID, 
+																			   beanProps.class, 
+																			   arguments.beanXml.XmlChildren, 
+																			   false, 
+																			   true, 
+																			   true,
+																			   beanProps.initMethod,
+																			   beanProps.factoryBean,
+																			   beanProps.factoryMethod,
+																			   beanProps.autoWire,
+																			   false,
+																			   false,
+																			   false,
+																			   beanProps.parent)/>
+		
+		<!--- now return the new beanUID --->
+		<cfreturn beanProps.beanID />
 	</cffunction>
 	
 	<cffunction name="getName" access="public" output="false" returntype="string" hint="I retrieve the Name from this instance's data">

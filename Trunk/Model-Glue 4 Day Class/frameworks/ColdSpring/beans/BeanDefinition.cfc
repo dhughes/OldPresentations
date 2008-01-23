@@ -15,7 +15,7 @@
   limitations under the License.
 		
 			
- $Id: BeanDefinition.cfc,v 1.30 2006/06/06 12:41:38 rossd Exp $
+ $Id: BeanDefinition.cfc,v 1.38 2007/11/23 17:07:16 scottc Exp $
 
 --->
 
@@ -35,6 +35,8 @@
 	<cfset variables.instanceData.Constructed = false />
 	<!--- whether this bean is a factory: --->	
 	<cfset variables.instanceData.Factory = false />
+	<!--- whether this bean is a proxy factory: --->	
+	<cfset variables.instanceData.ProxyFactory = false />
 	<!--- whether this bean is a factory bean: --->	
 	<cfset variables.instanceData.isFactoryBean = false />
 	<!--- name of an init-method to call on this bean once all dependencies are set: --->
@@ -53,6 +55,20 @@
 	<cfset variables.instanceData.factoryMethod = ''>
 	<!--- autowire method, defaults to true (a string) --->
 	<cfset variables.instanceData.autowire = 'no'>
+	<!--- whether this bean is a factoryPostProcessor --->
+	<cfset variables.instanceData.factoryPostProcessor = false/>
+	<!--- whether this bean is a beanPostProcessor --->
+	<cfset variables.instanceData.beanPostProcessor = false/>
+	
+	<!--- whether the dependencies have actually been checked already --->
+	<cfset variables.instanceData.dependenciesChecked = false />
+	<cfset variables.instanceData.dependentBeans = 0 />
+	
+	<!--- support for 'abstract' and 'parent' bean definitions --->	
+	<cfset variables.instanceData.abstract = false>
+	<cfset variables.instanceData.parent = ''>
+	<cfset variables.instanceData.childDefinition = false>
+	<cfset variables.instanceData.merged = false>
 	
 	
 	<cffunction name="init" returntype="coldspring.beans.BeanDefinition" output="false"
@@ -61,6 +77,109 @@
 					hint="reference to the coldspring BeanFactory who is creating this bean definition."/>					
 		<cfset setBeanFactory(arguments.beanFactory) />
 		<cfreturn this/>	
+	</cffunction>
+	
+	<cffunction name="initFromParent" returntype="coldspring.beans.BeanDefinition" output="false"
+				hint="Constructor. Creates a new Bean Definition as a copy of a parent bean definition.">
+		<cfargument name="parent" type="coldspring.beans.BeanDefinition" required="true" 
+					hint="reference to a bean definition to copy this definition's properties from"/>	
+		
+		<cfset setBeanFactory(arguments.parent.getBeanFactory()) />									
+		<cfset setBeanClass(arguments.parent.getBeanClass()) />				
+		<cfset setAbstract(arguments.parent.isAbstract()) />	
+					
+		<cfset setConstructorArgs(arguments.parent.getConstructorArgs()) />				
+		<cfset setProperties(arguments.parent.getProperties()) />				
+		<cfset setDependenciesForCopy(arguments.parent.getDependenciesForCopy()) />	
+					
+		<cfset getBeanFactory(arguments.parent.getBeanFactory()) />			
+		<cfset setSingleton(arguments.parent.isSingleton()) />	
+		<cfset setLazyInit(arguments.parent.isLazyInit())> 
+		<cfset setIsFactory(arguments.parent.isFactory()) /> 
+		<cfset setIsProxyFactory(arguments.parent.isProxyFactory()) /> 	
+		<cfset setAutowire(arguments.parent.getAutowire()) />		
+		<cfset setFactoryPostProcessor(arguments.parent.isFactoryPostProcessor()) />	
+		<cfset setBeanPostProcessor(arguments.parent.isBeanPostProcessor()) />	
+		
+		<cfset setInitMethod(arguments.parent.getInitMethod()) />	
+		<cfif arguments.parent.isFactoryBean()>		
+			<cfset setFactoryBean(arguments.parent.getFactoryBean()) />		
+		</cfif>
+		<cfset setFactoryMethod(arguments.parent.getFactoryMethod()) />	
+		
+		<cfreturn this/>	
+	</cffunction>
+	
+	<!--- for adding parent bean support. We will first duplicate the parent bean definition with initFromParent, then
+		  overwrite the paren't properties (or add constructor args and properties) however some of these rules will need a lot
+		  of tweeling, here are those of Java Spring:
+		  
+		  /**
+		 * Override settings in this bean definition from the given bean definition.
+		 * <p><ul>
+		 * <li>Will override beanClass if specified in the given bean definition.
+		 * <li>Will always take abstract, singleton, lazyInit from the given bean definition.
+		 * <li>Will add constructorArgumentValues, propertyValues, methodOverrides to
+		 * existing ones.
+		 * <li>Will override initMethodName, destroyMethodName, staticFactoryMethodName
+		 * if specified.
+		 * <li>Will always take dependsOn, autowireMode, dependencyCheck from the
+		 * given bean definition.
+		 * </ul>
+		 */
+	--->
+	
+	<cffunction name="overrideProperties" returntype="void" output="false" 
+				hint="Overrides bean definition properties with those of supplied bean definition. This is for 'Parent' bean definition support">
+		<cfargument name="fromBeanDef" type="coldspring.beans.BeanDefinition" required="true">
+		<cfset var constructorArgs = 0 />
+		<cfset var properties = 0 />
+		<cfset var dependencies = '' />
+		<cfset var arg = 0 />
+		<cfset var prop = 0 />
+		<cfset var dep = "" />
+		
+		<cfset setBeanID(arguments.fromBeanDef.getBeanID()) />
+		
+		<cfif len(arguments.fromBeanDef.getBeanClass())>
+			<cfset setBeanClass(arguments.fromBeanDef.getBeanClass()) />		
+		</cfif>
+		
+		<cfset setAbstract(arguments.fromBeanDef.isAbstract()) />
+		<cfset setSingleton(arguments.fromBeanDef.isSingleton()) />
+		<cfset setLazyInit(arguments.fromBeanDef.isLazyInit()) />
+		
+		<cfset constructorArgs = arguments.fromBeanDef.getConstructorArgs() />	
+		<cfloop collection="#constructorArgs#" item="arg">
+			<cfset addConstructorArg(constructorArgs[arg]) />
+		</cfloop>
+			
+		<cfset properties = arguments.fromBeanDef.getProperties() />
+		<cfloop collection="#properties#" item="prop">
+			<cfset addProperty(properties[prop]) />
+		</cfloop>
+		
+		<cfset dependencies = arguments.fromBeanDef.getDependenciesForCopy() />
+		<cfloop list="#dependencies#" index="dep">
+			<cfset addDependency(dep) />
+		</cfloop>
+		
+		<cfif len(arguments.fromBeanDef.getInitMethod())>
+			<cfset setInitMethod(arguments.fromBeanDef.getInitMethod()) />
+		</cfif>
+		<cfif arguments.fromBeanDef.isFactoryBean()>		
+			<cfset setFactoryBean(arguments.fromBeanDef.getFactoryBean()) />		
+		</cfif>
+		<cfif len(arguments.fromBeanDef.getFactoryMethod())>
+			<cfset setFactoryMethod(arguments.fromBeanDef.getFactoryMethod()) />	
+		</cfif>
+		
+		<cfset setAutowire(arguments.fromBeanDef.getAutowire()) />
+		
+	</cffunction>
+	
+	<cffunction name="getDebuggData" access="public" returntype="struct" output="false">
+		<cfreturn variables.instanceData />
 	</cffunction>
 	
 	<cffunction name="getBeanID" access="public" output="false" returntype="string" 
@@ -83,6 +202,45 @@
 				hint="I set the BeanClass in this instance's data">
 		<cfargument name="BeanClass" type="string" required="true"/>
 		<cfset variables.instanceData.BeanClass = arguments.BeanClass />
+	</cffunction>
+	
+	<cffunction name="isAbstract" access="public" output="false" returntype="boolean" 
+				hint="Returns the 'abstract' flag for the bean definition">
+		<cfreturn variables.instanceData.abstract />
+	</cffunction>
+
+	<cffunction name="setAbstract" access="public" output="false" returntype="void"  
+				hint="I set the 'abstract' flag for the bean definition">
+		<cfargument name="abstract" type="boolean" required="true"/>
+		<cfset variables.instanceData.abstract = arguments.abstract />
+	</cffunction>
+	
+	<cffunction name="getParent" access="public" output="false" returntype="string" 
+				hint="Returns the parent bean definition (name) for this bean definition">
+		<cfreturn variables.instanceData.parent />
+	</cffunction>
+
+	<cffunction name="setParent" access="public" output="false" returntype="void"  
+				hint="I set the parent bean definition (name) for this bean definition">
+		<cfargument name="parent" type="string" required="true"/>
+		<cfset variables.instanceData.parent = arguments.parent />
+		<cfset variables.instanceData.childDefinition = true />
+	</cffunction>
+	
+	<cffunction name="isChildDefinition" access="public" output="false" returntype="boolean" 
+				hint="Returns the 'childDefinition' flag for the bean definition">
+		<cfreturn variables.instanceData.childDefinition />
+	</cffunction>
+
+	<cffunction name="setMerged" access="public" output="false" returntype="void"  
+				hint="I set the 'merged' flag for this bean definition">
+		<cfargument name="merged" type="boolean" required="true"/>
+		<cfset variables.instanceData.merged = arguments.merged />
+	</cffunction>
+	
+	<cffunction name="isMerged" access="public" output="false" returntype="boolean" 
+				hint="Returns the 'merged' flag for the bean definition">
+		<cfreturn variables.instanceData.merged />
 	</cffunction>
 	
 	<!--- 4/3/6: adding instanceOf method to beanDefinition, there may bef
@@ -137,7 +295,7 @@
 			<cfreturn variables.instanceData.constructorArgs[arguments.constructorArgName] />
 		<cfelse>
 			<cfthrow type="coldspring.beanDefException" 
-					 message="constructor-arg requested does not exist for bean: #getBeanID()# "/>
+					 message="constructor-arg requested (#arguments.constructorArgName#) does not exist for bean: #getBeanID()# "/>
 		</cfif>
 	</cffunction>
 	
@@ -165,7 +323,7 @@
 			<cfreturn variables.instanceData.properties[arguments.propertyName] />
 		<cfelse>
 			<cfthrow type="coldspring.beanDefException" 
-					 message="property requested does not exist for bean: #getBeanID()# "/>
+					 message="property requested (#arguments.propertyName#) does not exist for bean: #getBeanID()# "/>
 		</cfif>
 	</cffunction>
 	
@@ -175,6 +333,17 @@
 		<cfif not ListFindNoCase(variables.instanceData.Dependencies, arguments.refName)>
 			<cfset variables.instanceData.Dependencies = ListAppend(variables.instanceData.Dependencies, arguments.refName) />
 		</cfif>
+	</cffunction>
+	
+	<cffunction name="setDependenciesForCopy" access="public" output="false" returntype="string"  
+				hint="I set the base dependency list for copying the bean definition only (parent bean def support)">
+		<cfargument name="dependencies" type="string" required="true"/>
+		<cfset variables.instanceData.Dependencies = arguments.dependencies />
+	</cffunction>
+	
+	<cffunction name="getDependenciesForCopy" access="public" output="false" returntype="string"  
+				hint="I return the base dependency list for copying the bean definition only (parent bean def support)">
+		<cfreturn variables.instanceData.Dependencies />
 	</cffunction>
 	
 	<cffunction name="getDependencies" access="public" output="false" returntype="void"
@@ -360,12 +529,16 @@
 			<cfif dependIx LT 1>
 				
 				<cfset arguments.dependentBeans.allBeans = ListAppend(arguments.dependentBeans.allBeans, refName) />
-				<cfset getBeanFactory().getBeanDefinition(refName).getDependencies(arguments.dependentBeans) />
+				<cfset getBeanFactory().getMergedBeanDefinition(refName).getDependencies(arguments.dependentBeans) />
 				<cfset arguments.dependentBeans.orderedBeans = ListPrepend(arguments.dependentBeans.orderedBeans, refName) />
 
 			</cfif>
 			
 		</cfloop>
+		
+		<!--- save the dependent beans 
+		<cfset variables.instanceData.dependentBeans = arguments.dependentBeans />
+		<cfset variables.instanceData.dependenciesChecked = true /> --->
 		
 	</cffunction>
 	
@@ -373,6 +546,7 @@
 				hint="I retrieve the the actual bean instance (a new one if this is a prototype bean) from this bean definition - or the result of a factory-method invocation">
 		
 		<cfset var bean = 0 />
+		<cfset var additionalInfo = "" />
 		<!--- create this if it doesn't exist --->
 		<cftry>
 			<cfif not structkeyexists(variables,"beanInstance")>
@@ -386,9 +560,15 @@
 			</cfif>
 			
 			<cfcatch type="any">
+				<cfif StructKeyExists(cfcatch, "line")>
+					<cfset additionalInfo = "<br/> Line: " & cfcatch.line />
+				</cfif>
+				<cfif StructKeyExists(cfcatch, "Snippet")>
+					<cfset additionalInfo = additionalInfo & "<br/> Snippet: " & HTMLCodeFormat(cfcatch.Snippet) />
+				</cfif>
 				<cfthrow type="coldspring.beanCreationException" 
 					message="Bean creation exception in #getBeanClass()#" 
-					detail="#cfcatch.message#:#cfcatch.detail#">
+					detail="#cfcatch.message#:#cfcatch.detail#:#additionalInfo#">
 			</cfcatch>
 		</cftry>
 		
@@ -405,7 +585,15 @@
 		</cfif>
 	</cffunction>
 	
-	<cffunction name="getBeanFactory" access="public" output="false" returntype="struct" 
+	<cffunction name="dependenciesChecked" access="public" output="false" returntype="boolean">
+		<cfreturn variables.instanceData.dependenciesChecked />		
+	</cffunction>
+	
+	<cffunction name="getDependentBeans" access="public" output="false" returntype="struct">
+		<cfreturn variables.instanceData.dependentBeans />		
+	</cffunction>
+	
+	<cffunction name="getBeanFactory" access="public" output="false" returntype="coldspring.beans.BeanFactory" 
 				hint="I retrieve the Bean Factory from this instance's data">
 		<cfreturn variables.instanceData.BeanFactory />
 	</cffunction>
@@ -425,6 +613,17 @@
 				hint="I set the Singleton flag in this instance's data">
 		<cfargument name="Singleton" type="boolean" required="true"/>
 		<cfset variables.instanceData.Singleton = arguments.Singleton />
+	</cffunction>
+	
+	<cffunction name="isLazyInit" access="public" output="false" returntype="boolean" 
+				hint="I retrieve the LazyInit flag from this instance's data">
+		<cfreturn variables.instanceData.lazyInit />
+	</cffunction>
+
+	<cffunction name="setLazyInit" access="public" output="false" returntype="void"  
+				hint="I set the LazyInit flag in this instance's data">
+		<cfargument name="LazyInit" type="boolean" required="true"/>
+		<cfset variables.instanceData.lazyInit = arguments.LazyInit />
 	</cffunction>
 	
 	<cffunction name="isInnerBean" access="public" output="false" returntype="boolean" 
@@ -460,7 +659,16 @@
 		<cfset variables.instanceData.Factory = arguments.Factory/>
 	</cffunction>
 	
-	
+	<cffunction name="isProxyFactory" access="public" output="false" returntype="boolean" 
+				hint="I retrieve the Factory flag from this instance's data">
+		<cfreturn variables.instanceData.ProxyFactory />
+	</cffunction>
+
+	<cffunction name="setIsProxyFactory" access="public" output="false" returntype="void"  
+				hint="I set the Factory flag in this instance's data">
+		<cfargument name="ProxyFactory" type="boolean" required="true"/>
+		<cfset variables.instanceData.ProxyFactory = arguments.ProxyFactory/>
+	</cffunction>
 	
 	
 	
@@ -473,6 +681,30 @@
 				hint="I set the the autowire method in this instance's data">
 		<cfargument name="autowire" type="string" required="true"/>
 		<cfset variables.instanceData.autowire = arguments.autowire/>
+	</cffunction>
+	
+	
+	<cffunction name="isFactoryPostProcessor" access="public" output="false" returntype="boolean" 
+				hint="I retrieve the factoryPostProcessor flag from instance's data">
+		<cfreturn variables.instanceData.factoryPostProcessor />
+	</cffunction>
+
+	<cffunction name="setFactoryPostProcessor" access="public" output="false" returntype="void"  
+				hint="I set the the factoryPostProcessor flag in this instance's data">
+		<cfargument name="factoryPostProcessor" type="boolean" required="true"/>
+		<cfset variables.instanceData.factoryPostProcessor = arguments.factoryPostProcessor/>
+	</cffunction>
+	
+	
+	<cffunction name="isBeanPostProcessor" access="public" output="false" returntype="boolean" 
+				hint="I retrieve the beanPostProcessor flag from instance's data">
+		<cfreturn variables.instanceData.beanPostProcessor />
+	</cffunction>
+
+	<cffunction name="setBeanPostProcessor" access="public" output="false" returntype="void"  
+				hint="I set the the beanPostProcessor flag in this instance's data">
+		<cfargument name="beanPostProcessor" type="boolean" required="true"/>
+		<cfset variables.instanceData.beanPostProcessor = arguments.beanPostProcessor/>
 	</cffunction>
 	
 	
