@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+																															 
+<!--
+   Copyright (c) 2006, Paul Kenney
+   All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Test Case Assertions</title>
+
+	<style type="text/css">
+		@import url(assets/styles.css);
+	</style>
+</head>
+
+<body>
+
+<div class="feature">
+
+	<h2>What is Unit Testing?</h2>
+
+	<p>
+		Unit testing refers to the practice of developers writing code to test code. It is 
+		most important in circumstances where developers write "low-level" code or software 
+		components that are intended to be used by other components or otherwise extended.
+	</p>
+	
+	<p>There are two primary ways that unit testing differs from end-user or QA testing:</p>
+	
+	<ul>
+		<li>
+			The code it tests is generally not accessible from a front end or user interface. 
+			It's often lower-level than presentation code.
+		</li>
+		<li>
+			The code it tests is easily quantifiable and measurable. This means it can be tested 
+			programmatically; a subjective tester doesn't have to test it.
+		</li>
+	</ul>
+	
+	<p>
+		Writing unit testing code for software components is a good idea because you can catch bugs in 
+		low-level code before they reach the user-interface level, where they are often quite difficult 
+		to track down.
+	</p>
+	
+	<p>
+		For example, let's assume you built a ColdFusion component called calc.cfc, which does various 
+		mathematical calculations for you. You then use calc.cfc in an application, which retrieves housing 
+		prices out of a database, calculates monthly payment scenarios at various interest rates and loan 
+		durations, and then displays all the data in an HTML table.
+	</p>
+	
+	<p>
+		If you do not unit test calc.cfc and other low-level code, and someone on the QA team discovers that 
+		some of the numbers in the HTML table look incorrect, you might have difficulty tracking down the bug. 
+		It could be that the data in the database is wrong, the SQL that retrieves the data from the database 
+		is wrong, there is an error in the presentation or number-formatting logic, there is an error in the 
+		way you use the calc component's API, or there is simply an error in calc.cfc itself. By writing unit 
+		testing code to cover as many situations as possible, you just have to run the code and quickly inspect 
+		the easy-to-read results to narrow down the possibilities.
+	</p>
+	
+	<p>
+		The importance of unit testing code increases the more you are able to reuse and layer your code. 
+		For instance, let's say you build a component called bank.cfc that models common bank transactions and 
+		makes heavy use of calc.cfc. As before, if you find errors in bank.cfc, you won't know whether the errors 
+		reside actually in bank.cfc or calc.cfc unless you can unit test both components.
+	</p>
+	
+	<p>
+		Unit testing is also invaluable when you decide to refactor software components. Unit tests can tell you 
+		instantly whether your refactoring actually broke the component or other components that depend on it.
+	</p>
+	
+	<p>
+		Unit testing is extremely important in environments where multiple developers work on a single project. 
+		For instance, if I am writing an application that calculates loan amounts based on real estate information 
+		in a database and one morning I update my source tree with all the latest code, it's going to be extremely 
+		inconvenient and a huge waste of my time if I update a bunch of little bugs checked in by other developers. 
+		If the other developers unit tested their code before checking it in, however, they could catch most of 
+		their bugs before they would affect other people's work.
+	</p>
+	
+	<p>
+		In the past, there was not much need for unit testing in ColdFusion because ColdFusion was primarily a presentation 
+		language that lacked a sophisticated ability to put together software components. With the introduction of ColdFusion 
+		components, however, a unit testing framework not only became extremely useful, but also was practical to implement 
+		and use.
+	</p>
+	
+	<p>
+		Developers who don't like unit testing code usually argue that it's a waste of time. In other words, for every 
+		component you write, you end up having to write a test component along with it, which adds time to the development 
+		process. Developers who have been writing unit testing code for a long time, however, counter that the time you 
+		save in tracking down and fixing low-level bugs is well worth the relatively small amount of time it takes to 
+		write unit tests.
+	</p>
+	
+	<p>
+		Unit testing frameworks like cfcUnit make the process of writing unit testing code as efficient as possible. 
+		Some developers go so far as to write unit testing code before implementing the components that the tests 
+		are actually designed to test. Unit testing code is a good way to exercise your API and make sure it's usable 
+		and practical.
+	</p>
+	
+	<p class="byline">
+		This is an except from an article written by Christian Cantrell titled &quot;CFUnit Testing Components&quot;, 
+		included on Macromedia's DRK 3.
+	</p>
+
+</div>
+
+</body>
+
+</html>

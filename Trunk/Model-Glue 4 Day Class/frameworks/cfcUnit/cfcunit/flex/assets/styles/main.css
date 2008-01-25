@@ -1,0 +1,83 @@
+/* CSS file */
+
+Application {
+themeColor: #FFEE88;
+  backgroundGradientColors: #c0c0c0, #c0c0c0;
+}
+
+Panel {
+	headerColors: #F2CB2A,#FFEE88;
+	borderAlpha: 1;
+	cornerRadius: 0;
+	borderThicknessBottom: 0;
+	borderThicknessLeft: 0;
+	borderThicknessRight:0;
+}
+
+Alert {
+	backgroundColor: #FFFFFF;
+	color: #000000;
+}
+
+.title {
+	font-size: 16;
+}
+
+.error {
+	backgroundColor: #FFB4AB;
+}
+
+.groupTitle {
+	font-size: 16;
+}
+
+.detailTitle {
+	backgroundColor: #F0F0F0;
+	font-size: 16;
+	paddingTop: 5;
+	paddingLeft: 10;
+	paddingBottom: 5;
+}
+
+.subTitle {
+	font-size: 13;
+}
+
+.smallRunButton{
+	verticalCenter:0;
+	upSkin:Embed("/assets/images/control_play.png");
+	overSkin:Embed("/assets/images/control_play_blue.png");
+	downSkin:Embed("/assets/images/control_play_blue.png");
+	paddingTop: 3;
+}
+
+.longText {
+	border:0;
+}
+
+.cellBox {
+	
+	paddingTop: 3;
+	paddingLeft: 3;
+	paddingBottom: 3;
+}
+
+HRule {
+	shadowColor: #cccccc;
+}
+
+.errorButton{
+	icon: Embed("/assets/images/exclamation.png");
+	fillColors: #ffffff, #ffb192;
+}
+
+.failedButton{
+	icon: Embed("/assets/images/error.png");
+	fillColors: #ffffff, #ffef9c;
+}
+
+.passedButton{
+	icon: Embed("/assets/images/accept.png");
+	fillColors: #ffffff, #e3ffbc;
+}
+
