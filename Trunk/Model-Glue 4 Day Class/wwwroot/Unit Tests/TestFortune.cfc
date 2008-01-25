@@ -67,7 +67,7 @@
 	
 	<!--- cleanup after the test --->
 	<cffunction name="teardown" returntype="void" access="private"> 
-		<!--- nothing to do --->
+		
 	</cffunction>
 	
 </cfcomponent>
