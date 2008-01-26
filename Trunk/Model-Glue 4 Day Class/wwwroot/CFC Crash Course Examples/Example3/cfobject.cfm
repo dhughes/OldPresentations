@@ -7,5 +7,5 @@
 <!--- call the sayHello method on the
 helloWorld object and pass two arguments --->
 <cfoutput>
-<p>#request.helloWorld.sayHello("Powered By Detroit", 5)#</p>
+<p>#request.helloWorld.sayHello("Training Class", 5)#</p>
 </cfoutput>

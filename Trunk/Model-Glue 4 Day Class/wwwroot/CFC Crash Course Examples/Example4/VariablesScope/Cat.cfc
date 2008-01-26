@@ -11,4 +11,5 @@
 		returntype="string">
 		<cfreturn "I am a #variables.color# cat weighing in at #variables.weight#.  My name is #variables.name#!" />
 	</cffunction>
+	
 </cfcomponent>

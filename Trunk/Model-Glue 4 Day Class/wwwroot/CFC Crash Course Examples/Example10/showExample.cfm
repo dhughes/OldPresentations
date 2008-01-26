@@ -26,6 +26,7 @@
 <cfset employee.setFirstName("Ann") /> 
 <cfset employee.setLastName("Miller") />
 <cfset employee.setBoss(boss) />
+
 <!--- add the employee to the company --->
 <cfset company.addEmployee(employee) />
 

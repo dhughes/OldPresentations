@@ -5,7 +5,7 @@ on the HelloWorld component --->
 	method="sayHello"
 	returnvariable="results">
 	<!--- Pass in two arguments --->
-	<cfinvokeargument name="thing" value="Powered By Detroit" />
+	<cfinvokeargument name="thing" value="Training Class" />
 	<cfinvokeargument name="times" value="5" />
 </cfinvoke>
 

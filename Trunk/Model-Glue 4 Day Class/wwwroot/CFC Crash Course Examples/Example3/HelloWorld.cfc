@@ -32,15 +32,3 @@
 	</cffunction>
 	
 </cfcomponent>
-
-<cfcomponent>
-
-	<cffunction name="getBalance">
-		<!--- do anything needed to get and return the balance --->
-	</cffunction>
-	
-	<cffunction name="deposit">
-		<!--- do anything needed to deposit funds --->
-	</cffunction>
-
-</cfcomponent>
