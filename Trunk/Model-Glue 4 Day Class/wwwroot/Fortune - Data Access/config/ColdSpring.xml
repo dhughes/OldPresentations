@@ -10,7 +10,7 @@
 		<property name="defaultEvent"><value>page.index</value></property>
 		<property name="reloadPassword"><value>true</value></property>
 		<property name="viewMappings"><value>/Fortune - Data Access/views</value></property>
-		<property name="generatedViewMapping"><value>/Fortune/views/generated</value></property>
+		<property name="generatedViewMapping"><value>/Fortune - Data Access/views/generated</value></property>
 		<property name="configurationPath"><value>config/ModelGlue.xml</value></property>
 		<property name="scaffoldPath"><value>config/scaffolds/Scaffolds.xml</value></property>
 		<property name="statePrecedence"><value>form</value></property>
