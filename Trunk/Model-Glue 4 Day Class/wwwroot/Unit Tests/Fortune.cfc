@@ -37,11 +37,9 @@
 			ORDER BY newId()
 		</cfquery>
 		
-		<!---- test comment
-		
 		<cfif fortune.recordcount IS 0>
 			<cfthrow message="No Fortune!" detail="No fortune was returned.  Did you provided a valid categoryId?" type="Fortune.getFortune.NoFortune">
-		</cfif> ---->
+		</cfif>
 			
 		<cfreturn fortune.fortune />
 	</cffunction>

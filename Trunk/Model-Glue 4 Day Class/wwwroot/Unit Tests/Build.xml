@@ -9,8 +9,8 @@
 	</taskdef>
 		
 	<target name="RunTests">
-		<cfcunit verbose="true"> 
-			<service hostname="localhost"/> 
+		<cfcunit> 
+			<service hostname="mg4day"/> 
 			<testclass name="Unit Tests.TestFortune"/> 
 		</cfcunit>
 	</target>
