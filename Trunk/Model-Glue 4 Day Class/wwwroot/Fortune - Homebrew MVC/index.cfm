@@ -1,8 +1,8 @@
-<cfset categories = viewstate.getValue("categories") />
-<cfset xe.submit = viewstate.getValue("xe.submit") />
-<cfset myself = viewstate.getValue("myself")>
+<cfmodule template="controller.cfm" do="getCategories" result="categories" />
 
-<cfform name="CategoryForm" action="#myself##xe.submit#">
+<h1>Fortune!</h1>
+
+<cfform name="CategoryForm" action="showFortune.cfm">
 	<p>
 		<label>Category:</label>
 		<cfselect name="categoryId" query="categories" display="category" value="categoryId" />

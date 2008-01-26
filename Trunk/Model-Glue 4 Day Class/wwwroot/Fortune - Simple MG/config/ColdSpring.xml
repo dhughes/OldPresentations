@@ -7,11 +7,11 @@
 		<property name="rescaffold"><value>true</value></property>
 		<!-- Be sure to change debug to false when you go to production! -->
 		<property name="debug"><value>true</value></property>
-		<property name="defaultEvent"><value>test</value></property>
+		<property name="defaultEvent"><value>Fortune.Home</value></property>
 		<property name="reloadKey"><value>init</value></property>
 		<property name="reloadPassword"><value>true</value></property>
 		<property name="viewMappings"><value>/Fortune - Simple MG/views</value></property>
-		<property name="generatedViewMapping"><value>/Fortune/views/generated</value></property>
+		<property name="generatedViewMapping"><value>/Fortune - Simple MG/views/generated</value></property>
 		<property name="configurationPath"><value>config/ModelGlue.xml</value></property>
 		<property name="scaffoldPath"><value>config/scaffolds/Scaffolds.xml</value></property>
 		<property name="statePrecedence"><value>form</value></property>

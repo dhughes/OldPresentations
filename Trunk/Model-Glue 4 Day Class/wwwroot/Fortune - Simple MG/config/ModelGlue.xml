@@ -8,7 +8,7 @@
 	</controllers>
   
 	<event-handlers>
-		<event-handler name="test">
+		<event-handler name="Fortune.Home">
 			<broadcasts> 
 				<message name="NeedCategories" />
 			</broadcasts>
@@ -16,9 +16,7 @@
 				<result do="view.template" />
 			</results>
 			<views>
-				<include name="body" template="consumer/dspIndex.cfm">
-					<value name="xe.submit" value="Fortune.ShowFortune" />
-				</include>
+				<include name="body" template="dspIndex.cfm" />
 			</views>
 		</event-handler>
 		
