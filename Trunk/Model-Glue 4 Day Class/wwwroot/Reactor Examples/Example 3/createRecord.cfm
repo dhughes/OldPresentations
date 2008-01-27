@@ -5,4 +5,7 @@
 <!--- create the reactor factory --->
 <cfset Reactor = ColdSpring.getBean("ReactorFactory") />
 
-<cfdump var="#Reactor#" />
+<!--- create a record --->
+<cfset CustomerRecord = Reactor.createRecord("Customer") />
+
+<cfdump var="#CustomerRecord#" />

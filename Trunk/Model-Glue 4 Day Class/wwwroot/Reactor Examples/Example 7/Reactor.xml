@@ -1,0 +1,11 @@
+<reactor>
+	<objects>
+		
+		<object name="Customer">
+			<hasOne name="Address">
+				<relate from="addressId" to="addressId" />
+			</hasOne>
+		</object>
+				
+	</objects>
+</reactor>
