@@ -7,10 +7,10 @@
     <property name="rescaffold"><value>true</value></property>
     <!-- Be sure to change debug to false when you go to production! -->
     <property name="debug"><value>true</value></property>
-    <property name="defaultEvent"><value>page.index</value></property>
+    <property name="defaultEvent"><value>Customer.List</value></property>
     <property name="reloadPassword"><value>true</value></property>
-    <property name="viewMappings"><value>/GenericDatabaseMessages/views</value></property>
-    <property name="generatedViewMapping"><value>/GenericDatabaseMessages/views/generated</value></property>
+    <property name="viewMappings"><value>/ScaffoldingExample/views</value></property>
+    <property name="generatedViewMapping"><value>/ScaffoldingExample/views/generated</value></property>
     <property name="configurationPath"><value>config/ModelGlue.xml</value></property>
     <property name="scaffoldPath"><value>config/scaffolds/Scaffolds.xml</value></property>
     <property name="statePrecedence"><value>form</value></property>
@@ -21,7 +21,7 @@
     <property name="defaultCacheTimeout"><value>5</value></property>
     <property name="defaultScaffolds"><value>list,edit,view,commit,delete</value></property>
   </bean>
-  
+  	
   
  	<!-- 
 		Reactor:
@@ -36,11 +36,4 @@
 		<property name="mapping"><value>/GenericDatabaseMessages/model/data/reactor</value></property>
 		<property name="mode"><value>development</value></property>
 	</bean>
-
-	<!-- Custom Reactor Adaptor to support soft deletes
-	<bean id="ormAdapter.Reactor" class="GenericDatabaseMessages.model.orm.CustomReactorAdapter">
-		<constructor-arg name="framework"><ref bean="ModelGlue" /></constructor-arg>
-	</bean>
-	-->
-
 </beans>

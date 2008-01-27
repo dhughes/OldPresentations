@@ -33,4 +33,12 @@
 			<scale>0</scale>
 			<invalidType>The addressId field does not contain valid data.  This field must be a numeric value.</invalidType>
 		</addressId>
+		<deleted>
+			<label>deleted</label>
+			<comment/>
+			<maxlength>0</maxlength>
+			<scale>0</scale>
+			<notProvided>The deleted field is required but was not provided.</notProvided>
+			<invalidType>The deleted field does not contain valid data.  This field must be a boolean value.</invalidType>
+		</deleted>
 	</Customer>

@@ -1,0 +1,32 @@
+<modelglue>
+	<controllers>
+		<controller name="MyController" type="ScaffoldingExample.controller.Controller">
+			<message-listener message="OnRequestStart" function="OnRequestStart" />
+			<message-listener message="OnQueueComplete" function="OnQueueComplete" />
+			<message-listener message="OnRequestEnd" function="OnRequestEnd" />
+		</controller>
+	</controllers>
+  
+	<event-handlers>
+		<scaffold object="Customer">
+			<results>
+				<result do="view.template" />
+			</results>
+		</scaffold>
+
+		<event-handler name="view.template">
+			<broadcasts />
+			<results />
+			<views>
+				<include name="template" template="dspTemplate.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="exception">
+			<broadcasts />
+			<views>
+				<include name="body" template="dspException.cfm" />
+			</views>
+		</event-handler>
+	</event-handlers>
+</modelglue>
