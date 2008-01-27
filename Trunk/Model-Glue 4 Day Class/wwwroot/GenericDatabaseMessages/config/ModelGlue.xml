@@ -1,0 +1,83 @@
+<modelglue>
+	<controllers>
+		<controller name="MyController" type="GenericDatabaseMessages.controller.Controller">
+			<message-listener message="OnRequestStart" function="OnRequestStart" />
+			<message-listener message="OnQueueComplete" function="OnQueueComplete" />
+			<message-listener message="OnRequestEnd" function="OnRequestEnd" />
+		</controller>
+	</controllers>
+  
+	<event-handlers>
+		<event-handler name="page.index">
+			<broadcasts>
+				<message name="ModelGlue.GenericList">
+					<argument name="object" value="Customer" />
+					<argument name="orderBy" value="LastName" />
+				</message>
+			</broadcasts> 
+			<results>
+				<result do="view.template" />
+			</results>
+			<views>
+				<include name="body" template="dspIndex.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="CustomerForm">
+			<broadcasts>
+				<message name="ModelGlue.GenericRead">
+					<argument name="object" value="Customer" />
+					<argument name="criteria" value="customerId" />
+				</message>
+			</broadcasts> 
+			<results>
+				<result do="view.template" />
+			</results>
+			<views>
+				<include name="body" template="dspForm.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="SaveCustomer">
+			<broadcasts>
+				<message name="ModelGlue.GenericCommit">
+					<argument name="object" value="Customer" />
+					<argument name="criteria" value="customerId" />
+				</message>
+			</broadcasts> 
+			<results>
+				<result name="validationError" do="CustomerForm" />
+				<result name="commit" do="page.index" />
+			</results>
+			<views />
+		</event-handler>
+		
+		<event-handler name="DeleteCustomer">
+			<broadcasts>
+				<message name="ModelGlue.GenericDelete">
+					<argument name="object" value="Customer" />
+					<argument name="criteria" value="customerId" />
+				</message>
+			</broadcasts> 
+			<results>
+				<result do="page.index" />
+			</results>
+			<views />
+		</event-handler>
+		
+		<event-handler name="view.template">
+			<broadcasts />
+			<results />
+			<views>
+				<include name="template" template="dspTemplate.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="exception">
+			<broadcasts />
+			<views>
+				<include name="body" template="dspException.cfm" />
+			</views>
+		</event-handler>
+	</event-handlers>
+</modelglue>

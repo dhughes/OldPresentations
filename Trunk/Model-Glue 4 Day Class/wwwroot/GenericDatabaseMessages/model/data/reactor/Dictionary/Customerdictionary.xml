@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<Customer>
+		<customerId>
+			<label>customerId</label>
+			<comment/>
+			<maxlength>0</maxlength>
+			<scale>0</scale>
+			<notProvided>The customerId field is required but was not provided.</notProvided>
+			<invalidType>The customerId field does not contain valid data.  This field must be a numeric value.</invalidType>
+		</customerId>
+		<firstName>
+			<label>firstName</label>
+			<comment/>
+			<maxlength>50</maxlength>
+			<scale>0</scale>
+			<notProvided>The firstName field is required but was not provided.</notProvided>
+			<invalidType>The firstName field does not contain valid data.  This field must be a string value.</invalidType>
+			<invalidLength>The firstName field is too long.  This field must be no more than 50 bytes long.</invalidLength>
+		</firstName>
+		<lastName>
+			<label>lastName</label>
+			<comment/>
+			<maxlength>50</maxlength>
+			<scale>0</scale>
+			<notProvided>The lastName field is required but was not provided.</notProvided>
+			<invalidType>The lastName field does not contain valid data.  This field must be a string value.</invalidType>
+			<invalidLength>The lastName field is too long.  This field must be no more than 50 bytes long.</invalidLength>
+		</lastName>
+		<addressId>
+			<label>addressId</label>
+			<comment/>
+			<maxlength>0</maxlength>
+			<scale>0</scale>
+			<invalidType>The addressId field does not contain valid data.  This field must be a numeric value.</invalidType>
+		</addressId>
+	</Customer>
