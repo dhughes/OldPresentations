@@ -1,0 +1,57 @@
+<modelglue>
+	<controllers>
+		<controller name="MyController" type="Model-Glue Results Example.controller.Controller">
+			<message-listener message="NeedCode" function="DoGetCode" />
+			<message-listener message="NeedToCheckCode" function="DoCheckCode" />
+		</controller>
+	</controllers>
+  
+	<event-handlers>
+		<event-handler name="page.index">
+			<broadcasts>
+				<message name="NeedCode" />
+			</broadcasts> 
+			<results>
+				<result do="view.template" />
+			</results>
+			<views>
+				<include name="body" template="dspIndex.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="checkCode">
+			<broadcasts>
+				<message name="NeedToCheckCode" />
+			</broadcasts>
+			<results>
+				<result name="Match" do="codeMatched" />
+				<result name="NoMatch" do="page.index" />
+			</results>
+		</event-handler>
+		
+		<event-handler name="codeMatched">
+			<broadcasts />
+			<results>
+				<result do="view.template" />
+			</results>
+			<views>
+				<include name="body" template="dspMatch.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="view.template">
+			<broadcasts />
+			<results />
+			<views>
+				<include name="template" template="dspTemplate.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="exception">
+			<broadcasts />
+			<views>
+				<include name="body" template="dspException.cfm" />
+			</views>
+		</event-handler>
+	</event-handlers>
+</modelglue>
