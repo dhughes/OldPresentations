@@ -1,0 +1,198 @@
+
+<!-- Warning:  this file is generated.  It may be overwritten at any time. -->
+<modelglue>
+	<event-handlers>
+		
+		
+			
+			<event-handler name="Customer.list" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericList">
+								
+									<argument name="criteria" value="" />
+								
+									<argument name="object" value="Customer" />
+								
+									<argument name="queryName" value="CustomerQuery" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="dspCustomerList.cfm" append="true">
+							
+								<value name="xe.view" value="Customer.view" overwrite="true" />
+							
+								<value name="xe.delete" value="Customer.delete" overwrite="true" />
+							
+								<value name="xe.edit" value="Customer.edit" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+						
+							<result name="" do="view.template" redirect="false" append="" preserveState="true" />
+						
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Customer.edit" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericRead">
+								
+									<argument name="criteria" value="customerId" />
+								
+									<argument name="object" value="Customer" />
+								
+									<argument name="recordName" value="CustomerRecord" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="frmCustomer.cfm" append="true">
+							
+								<value name="xe.commit" value="Customer.commit" overwrite="true" />
+							
+								<value name="xe.list" value="Customer.list" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+						
+							<result name="" do="view.template" redirect="false" append="" preserveState="true" />
+						
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Customer.view" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericRead">
+								
+									<argument name="criteria" value="customerId" />
+								
+									<argument name="object" value="Customer" />
+								
+									<argument name="recordName" value="CustomerRecord" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="dspCustomer.cfm" append="true">
+							
+								<value name="xe.list" value="Customer.list" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+						
+							<result name="" do="view.template" redirect="false" append="" preserveState="true" />
+						
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Customer.Commit" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericCommit">
+								
+									<argument name="criteria" value="customerId" />
+								
+									<argument name="object" value="Customer" />
+								
+									<argument name="validationName" value="CustomerValidation" />
+								
+									<argument name="recordName" value="CustomerRecord" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+				</views>
+				<results>
+					
+						
+							<result name="" do="view.template" redirect="false" append="" preserveState="true" />
+						
+					
+						
+							<result name="commit" do="Customer.list" redirect="true" append="" preserveState="false" />
+						
+					
+						
+							<result name="validationError" do="Customer.edit" redirect="false" append="customerId" preserveState="false" />
+						
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Customer.delete" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericDelete">
+								
+									<argument name="criteria" value="customerId" />
+								
+									<argument name="object" value="Customer" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+				</views>
+				<results>
+					
+						
+							<result name="" do="view.template" redirect="false" append="" preserveState="true" />
+						
+							<result name="" do="Customer.list" redirect="true" append="" preserveState="false" />
+						
+					
+				</results>
+			</event-handler>
+		
+		
+		
+	</event-handlers>
+</modelglue>
+	
