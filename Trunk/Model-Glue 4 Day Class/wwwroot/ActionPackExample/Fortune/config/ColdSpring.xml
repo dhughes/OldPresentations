@@ -1,0 +1,38 @@
+<beans>
+  
+	<!-- Put definitions for your own beans and services here -->
+	
+	<bean id="Datasource" class="ActionPackExample.Fortune.model.Datasource">
+		<constructor-arg name="datasource">
+			<value>Fortune</value>
+		</constructor-arg>
+		<constructor-arg name="username">
+			<value></value>
+		</constructor-arg>
+		<constructor-arg name="password">
+			<value></value>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="CategoryGateway" class="ActionPackExample.Fortune.model.CategoryGateway">
+		<constructor-arg name="Datasource">
+			<ref bean="Datasource" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="FortuneDao" class="ActionPackExample.Fortune.model.FortuneDao">
+		<constructor-arg name="Datasource">
+			<ref bean="Datasource" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="FortuneService" class="ActionPackExample.Fortune.model.FortuneService">
+		<constructor-arg name="CategoryGateway">
+			<ref bean="CategoryGateway" />
+		</constructor-arg>
+		<constructor-arg name="FortuneDao">
+			<ref bean="FortuneDao" />
+		</constructor-arg>
+	</bean>
+	
+</beans>

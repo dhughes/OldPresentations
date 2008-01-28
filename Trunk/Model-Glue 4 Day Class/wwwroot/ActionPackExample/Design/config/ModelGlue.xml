@@ -1,0 +1,17 @@
+<modelglue>
+
+	<config>
+		<setting name="beanMappings" value="/ActionPackExample/Design/config/ColdSpring.xml" />
+		<setting name="viewMappings" value="/ActionPackExample/Design/views" />
+	</config>
+
+	<event-handlers>
+		<event-handler name="ModelGlue.OnRequestEnd">
+			<broadcasts /> 
+			<results />
+			<views>
+				<include name="template" template="dspTemplate.cfm" />
+			</views>
+		</event-handler>
+	</event-handlers>
+</modelglue>

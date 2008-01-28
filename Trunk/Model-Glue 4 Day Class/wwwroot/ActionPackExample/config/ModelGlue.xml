@@ -1,0 +1,32 @@
+<modelglue>
+	<controllers>
+		<controller name="MyController" type="ActionPackExample.controller.Controller">
+			<message-listener message="OnRequestStart" function="OnRequestStart" />
+			<message-listener message="OnQueueComplete" function="OnQueueComplete" />
+			<message-listener message="OnRequestEnd" function="OnRequestEnd" />
+		</controller>
+	</controllers>
+  
+  	<!-- include the fortune actionpack -->
+  	<include template="/ActionPackExample/Fortune/config/ModelGlue.xml" />
+  
+	<!-- include the design actionpack -->
+  	<include template="/ActionPackExample/Design/config/ModelGlue.xml" />
+  
+  	<event-handlers>
+		<event-handler name="page.index">
+			<broadcasts /> 
+			<results />
+			<views>
+				<include name="body" template="dspIndex.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="exception">
+			<broadcasts />
+			<views>
+				<include name="body" template="dspException.cfm" />
+			</views>
+		</event-handler>
+	</event-handlers>
+</modelglue>

@@ -1,0 +1,54 @@
+<modelglue>
+	
+	<config>
+		<setting name="beanMappings" value="/ActionPackExample/Fortune/config/ColdSpring.xml" />
+		<setting name="viewMappings" value="/ActionPackExample/Fortune/views" />
+	</config>
+
+	<controllers>
+		<controller name="FortuneController" type="ActionPackExample.Fortune.controller.Controller">
+			<message-listener message="NeedCategories" function="DoGetCategories" />
+			<message-listener message="NeedFortune" function="DoGetFortune" />
+			<message-listener message="NeedToLogFortune" function="DoLogFortune" />
+			<message-listener message="NeedRecentFortunes" function="DoGetRecentFortunes" />
+		</controller>
+	</controllers>
+  
+	<event-handlers>
+		<event-handler name="Fortune.categories">
+			<broadcasts> 
+				<message name="NeedCategories" />
+			</broadcasts>
+			<results />
+			<views>
+				<include name="body" template="dspCategories.cfm">
+					<value name="xe.Fortune" value="Fortune.ShowFortune" />
+				</include>
+			</views>
+		</event-handler>
+		
+		<event-handler name="Fortune.ShowFortune">
+			<broadcasts> 
+				<message name="NeedFortune" />
+				<message name="NeedToLogFortune" />
+			</broadcasts>
+			<results />
+			<views>
+				<include name="body" template="dspFortune.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="Fortune.ShowRecentFortunes">
+			<broadcasts> 
+				<message name="NeedRecentFortunes">
+					<argument name="max" value="10" />
+				</message>
+			</broadcasts>
+			<results />
+			<views>
+				<include name="body" template="dspRecentFortunes.cfm" />
+			</views>
+		</event-handler>
+
+	</event-handlers>
+</modelglue>
