@@ -19,9 +19,9 @@
 	
 -->	
 <project name="New Model-Glue Application" default="build" basedir="..">
-  <property name="newApplicationName" value="myApplicationName" />
+  <property name="newApplicationName" value="ActionPackExample" />
 	<!-- for training class, please ignore: /Users/dhughes/Sites/Presentations/Trunk/Model-Glue 4 Day Class/wwwroot/ -->
-	<property name="newApplicationDirectory" value="c:/inetpub/wwwroot/${newApplicationName}" />
+	<property name="newApplicationDirectory" value="/Users/dhughes/Sites/Presentations/Trunk/Model-Glue 4 Day Class/wwwroot/${newApplicationName}" />
 	<!--
     For the OS X crowd (since Joe saw the light and converted)  
 		<property name="newApplicationDirectory" value="/Library/WebServer/Documents/${newApplicationName}" />
