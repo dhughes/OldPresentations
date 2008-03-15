@@ -1,0 +1,9 @@
+<beans>
+
+	<bean id="SecurityService" class="Security.model.SecurityService">
+		<property name="publicEvents">
+			<value>Security.LoginForm,Security.SubmitLoginForm,Entry.rss,Entry.listAll,Entry.view,Exception.exception</value>
+		</property>
+	</bean>
+
+</beans>

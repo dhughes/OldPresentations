@@ -1,0 +1,57 @@
+<modelglue>
+	<config>
+		<setting name="beanMappings" value="/Security/config/ColdSpring.xml" />
+		<setting name="viewMappings" value="/Security/views" />
+	</config>
+	
+	<controllers>
+		<controller name="SecurityController" type="Security.controller.Controller">
+			<message-listener message="Security.NeedToSecureEvent" function="DoSecureEvent" />
+			<message-listener message="OnRequestStart" function="DoGetLoggedIn" />
+			<message-listener message="Security.NeedToLoginUser" function="DoLoginUser" />
+			<message-listener message="Security.NeedToLogoutUser" function="DoLogUserOut" />			
+		</controller>
+	</controllers>
+  
+	<event-handlers>
+		
+		<event-handler name="ModelGlue.OnRequestStart">
+			<broadcasts>
+				<message name="OnRequestStart" />
+				<message name="Security.NeedToSecureEvent" />
+			</broadcasts>
+			<results>
+				<result name="ShowLoginForm" do="Security.LoginForm" />
+			</results>
+		</event-handler>
+		
+		<event-handler name="Security.LoginForm">
+			<views>
+				<include name="body" template="dspLoginForm.cfm">
+					<value name="xe.SubmitLoginForm" value="Security.SubmitLoginForm" />
+				</include>
+			</views>
+		</event-handler>
+		
+		<event-handler name="Security.SubmitLoginForm">
+			<broadcasts>
+				<message name="Security.NeedToLoginUser" />
+			</broadcasts>
+			<results>
+				<result name="failed" do="Security.LoginForm" />
+			</results>
+		</event-handler>
+		
+		<event-handler name="Security.Logout">
+			<broadcasts>
+				<message name="Security.NeedToLogoutUser" />
+			</broadcasts>
+			<results>
+				<result name="failed" do="Security.LoginForm" />
+			</results>
+		</event-handler>
+		
+		
+		
+	</event-handlers>
+</modelglue>
