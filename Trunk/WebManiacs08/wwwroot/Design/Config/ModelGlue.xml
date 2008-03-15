@@ -18,6 +18,7 @@
 					<value name="xe.Categories" value="Category.list" />
 					<value name="xe.login" value="Security.LoginForm" />
 					<value name="xe.logout" value="Security.Logout" />
+					<value name="xe.rss" value="Entry.rss" />					
 				</include>
 			</views>
 		</event-handler>

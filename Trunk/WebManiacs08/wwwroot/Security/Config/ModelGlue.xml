@@ -21,7 +21,7 @@
 				<message name="Security.NeedToSecureEvent" />
 			</broadcasts>
 			<results>
-				<result name="ShowLoginForm" do="Security.LoginForm" />
+				<result name="ShowLoginForm" do="Security.LoginForm" redirect="true" />
 			</results>
 		</event-handler>
 		

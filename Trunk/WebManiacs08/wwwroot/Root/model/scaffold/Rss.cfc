@@ -16,9 +16,9 @@
 		<!--- Set name --->
 		<cfset setName(variables.objectName & ".rss") />
 
-  	<!--- Add Views --->
-  	<cfloop from="1" to="#arrayLen(arguments.generatedViews)#" index="i">
-  		<cfset file = arguments.generatedViews[i].getPrefix() & variables.objectName & arguments.generatedViews[i].getSuffix() />
+	 	<!--- Add Views --->
+	 	<cfloop from="1" to="#arrayLen(arguments.generatedViews)#" index="i">
+	 		<cfset file = arguments.generatedViews[i].getPrefix() & variables.objectName & arguments.generatedViews[i].getSuffix() />
 	  	<cfset arguments.viewGenerator.generate(file, arguments.objectMetadata, arguments.generatedViews[i].getXsl()) />
 	  	<cfset view = createObject("component", "ModelGlue.unity.eventhandler.View").init() />
 	  	<cfset view.setName("body") />
@@ -26,27 +26,26 @@
 	  	<cfset view.setAppend(true) />
 	  	<cfswitch expression="#arguments.generatedViews[i].getName()#">
 	  		<cfcase value="rss">
-			  	<cfset view.addValue("xe.view", variables.objectName & ".view", true) />
-			  	<cfset view.addValue("xe.edit", variables.objectName & ".edit", true) />
-			  	<cfset view.addValue("xe.delete", variables.objectName & ".delete", true) />
+				<cfset view.addValue("xe.view", variables.objectName & ".view", true) />
 	  		</cfcase>
 	  	</cfswitch>
 	  	<cfset addView(view) />
-  	</cfloop>
-  	
-    <cfreturn this />
+	 	</cfloop>
+	 	
+	   <cfreturn this />
   </cffunction>
 
   <cffunction name="doPostConfiguration" returnType="void" output="false" hint="I add the scaffold's implicit messages and result mappings.">
 		<cfset var msg = "" />
 
-  	<!--- Add Messages --->
-  	<cfset msg = createObject("component", "ModelGlue.unity.eventhandler.Message").init() />
-  	<cfset msg.setName("ModelGlue.genericList") />
-  	<cfset msg.addArgument("object", variables.objectName) />
-  	<cfset msg.addArgument("queryName", variables.objectName & "Query") />
-  	<cfset msg.addArgument("criteria", "") />
-  	<cfset addMessage(msg) />
+		<!--- Add Messages --->
+		<cfset msg = createObject("component", "ModelGlue.unity.eventhandler.Message").init() />
+		<cfset msg.setName("ModelGlue.genericList") />
+		<cfset msg.addArgument("object", variables.objectName) />
+		<cfset msg.addArgument("queryName", variables.objectName & "Query") />
+		<cfset msg.addArgument("ascending", "false") />
+		<cfset msg.addArgument("criteria", "") />
+		<cfset addMessage(msg) />
 
 	</cffunction>
 </cfcomponent>

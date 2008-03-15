@@ -37,5 +37,10 @@
 		<property name="mapping"><value>/Root/model/data/reactor</value></property>
 		<property name="mode"><value>development</value></property>
 	</bean>
-
+	
+	<!-- Custom Reactor Adaptor to support soft deletes -->
+	<bean id="ormAdapter.Reactor" class="Root.model.orm.CustomReactorAdaptor">
+		<constructor-arg name="framework"><ref bean="ModelGlue" /></constructor-arg>
+	</bean>
+	
 </beans>

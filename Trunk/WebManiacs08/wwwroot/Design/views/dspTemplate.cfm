@@ -7,6 +7,7 @@
 <cfset xe.Logout = viewstate.getValue("xe.Logout") />
 <cfset xe.Entries = viewstate.getValue("xe.Entries") />
 <cfset xe.Categories = viewstate.getValue("xe.Categories") />
+<cfset xe.rss = viewstate.getValue("xe.rss") />
 <cfset loggedIn = viewstate.getValue("loggedIn") />
 
 <head>
@@ -16,6 +17,9 @@
 <meta name="author" content=""/> 
 <link rel="stylesheet" type="text/css" href="Design/css/style.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="Design/css/stylesheet.css" media="screen"/>
+<cfoutput>
+	<link rel="alternate" type="application/rss+xml" href="#myself##xe.rss#" title="Rss Feed" />
+</cfoutput>
 
 <title>Ye Olde Blog</title>
 

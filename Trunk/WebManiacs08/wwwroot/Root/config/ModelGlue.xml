@@ -4,8 +4,8 @@
 	</controllers>
 	
 	<include template="Design/config/ModelGlue.xml" />
-	<include template="Exception/config/ModelGlue.xml" />
 	<include template="Security/config/ModelGlue.xml" />
+	<include template="Exception/config/ModelGlue.xml" />
 	
 	<event-handlers>
 		
@@ -37,23 +37,9 @@
 		</event-handler>
 		
 		<scaffold object="Entry" type="list,view,edit,commit,delete,rss" />
+		
 		<scaffold object="Category" />
 		
-		<!-- <event-handler name="Root.Index">
-			<broadcasts /> 
-			<results />
-			<views>
-				<include name="body" template="dspIndex.cfm" />
-			</views>
-		</event-handler>
-		
-		<event-handler name="Root.PageTwo">
-			<broadcasts /> 
-			<results />
-			<views>
-				<include name="body" template="dspSecondaryPage.cfm" />
-			</views>
-		</event-handler> -->
-	
+			
 	</event-handlers>
 </modelglue>
