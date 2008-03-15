@@ -1,0 +1,26 @@
+<modelglue>
+	<config>
+		<setting name="viewMappings" value="/Design/views" />
+	</config>
+	
+	<controllers />
+  
+	<event-handlers>
+		
+		<event-handler name="ModelGlue.OnRequestEnd">
+			<broadcasts>
+				<message name="OnRequestEnd" />
+			</broadcasts>
+			<results />
+			<views>
+				<include name="template" template="dspTemplate.cfm">
+					<value name="xe.Entries" value="Entry.list" />
+					<value name="xe.Categories" value="Category.list" />
+					<value name="xe.login" value="Security.LoginForm" />
+					<value name="xe.logout" value="Security.Logout" />
+				</include>
+			</views>
+		</event-handler>
+		
+	</event-handlers>
+</modelglue>
