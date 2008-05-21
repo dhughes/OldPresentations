@@ -8,9 +8,7 @@
 	<event-handlers>
 		
 		<event-handler name="ModelGlue.OnRequestEnd">
-			<broadcasts>
-				<message name="OnRequestEnd" />
-			</broadcasts>
+			<broadcasts />
 			<results />
 			<views>
 				<include name="template" template="dspTemplate.cfm">

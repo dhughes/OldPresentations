@@ -2,7 +2,7 @@
 	
 	<bean id="ExceptionService" class="Exception.model.ExceptionService">
 		<property name="debug">
-			<value>true</value>
+			<value>false</value>
 		</property>
 	</bean>
 	

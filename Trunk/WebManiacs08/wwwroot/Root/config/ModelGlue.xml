@@ -1,7 +1,4 @@
 <modelglue>
-	<controllers>
-		<controller name="MyController" type="Root.controller.Controller" />
-	</controllers>
 	
 	<include template="Design/config/ModelGlue.xml" />
 	<include template="Security/config/ModelGlue.xml" />
