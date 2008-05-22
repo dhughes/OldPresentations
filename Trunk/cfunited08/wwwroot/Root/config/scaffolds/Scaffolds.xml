@@ -1,0 +1,398 @@
+
+<!-- Warning:  this file is generated.  It may be overwritten at any time. -->
+<modelglue>
+	<event-handlers>
+		
+		
+			
+			<event-handler name="Entry.list" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericList">
+								
+									<argument name="criteria" value="" />
+								
+									<argument name="object" value="Entry" />
+								
+									<argument name="queryName" value="EntryQuery" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="dspEntryList.cfm" append="true">
+							
+								<value name="xe.view" value="Entry.view" overwrite="true" />
+							
+								<value name="xe.delete" value="Entry.delete" overwrite="true" />
+							
+								<value name="xe.edit" value="Entry.edit" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Entry.view" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericRead">
+								
+									<argument name="criteria" value="entryId" />
+								
+									<argument name="object" value="Entry" />
+								
+									<argument name="recordName" value="EntryRecord" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="dspEntry.cfm" append="true">
+							
+								<value name="xe.list" value="Entry.list" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Entry.edit" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericList">
+								
+									<argument name="criteria" value="" />
+								
+									<argument name="object" value="Category" />
+								
+									<argument name="queryName" value="CategoryList" />
+								
+							</message>
+						
+					
+						
+							<message name="ModelGlue.genericRead">
+								
+									<argument name="criteria" value="entryId" />
+								
+									<argument name="object" value="Entry" />
+								
+									<argument name="recordName" value="EntryRecord" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="frmEntry.cfm" append="true">
+							
+								<value name="xe.commit" value="Entry.commit" overwrite="true" />
+							
+								<value name="xe.list" value="Entry.list" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Entry.Commit" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericCommit">
+								
+									<argument name="criteria" value="entryId" />
+								
+									<argument name="object" value="Entry" />
+								
+									<argument name="validationName" value="EntryValidation" />
+								
+									<argument name="recordName" value="EntryRecord" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+				</views>
+				<results>
+					
+						
+							<result name="commit" do="Entry.list" redirect="true" append="" preserveState="false" />
+						
+					
+						
+							<result name="validationError" do="Entry.edit" redirect="false" append="entryId" preserveState="false" />
+						
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Entry.delete" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericDelete">
+								
+									<argument name="criteria" value="entryId" />
+								
+									<argument name="object" value="Entry" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+				</views>
+				<results>
+					
+						
+							<result name="" do="Entry.list" redirect="true" append="" preserveState="false" />
+						
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Entry.rss" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericList">
+								
+									<argument name="criteria" value="" />
+								
+									<argument name="ascending" value="false" />
+								
+									<argument name="object" value="Entry" />
+								
+									<argument name="queryName" value="EntryQuery" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="dspEntryRss.cfm" append="true">
+							
+								<value name="xe.view" value="Entry.view" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Category.list" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericList">
+								
+									<argument name="criteria" value="" />
+								
+									<argument name="object" value="Category" />
+								
+									<argument name="queryName" value="CategoryQuery" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="dspCategoryList.cfm" append="true">
+							
+								<value name="xe.view" value="Category.view" overwrite="true" />
+							
+								<value name="xe.delete" value="Category.delete" overwrite="true" />
+							
+								<value name="xe.edit" value="Category.edit" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Category.edit" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericRead">
+								
+									<argument name="criteria" value="categoryId" />
+								
+									<argument name="object" value="Category" />
+								
+									<argument name="recordName" value="CategoryRecord" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="frmCategory.cfm" append="true">
+							
+								<value name="xe.commit" value="Category.commit" overwrite="true" />
+							
+								<value name="xe.list" value="Category.list" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Category.view" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericRead">
+								
+									<argument name="criteria" value="categoryId" />
+								
+									<argument name="object" value="Category" />
+								
+									<argument name="recordName" value="CategoryRecord" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+						<view name="body" template="dspCategory.cfm" append="true">
+							
+								<value name="xe.list" value="Category.list" overwrite="true" />
+							
+						</view>
+					
+				</views>
+				<results>
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Category.Commit" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericCommit">
+								
+									<argument name="criteria" value="categoryId" />
+								
+									<argument name="object" value="Category" />
+								
+									<argument name="validationName" value="CategoryValidation" />
+								
+									<argument name="recordName" value="CategoryRecord" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+				</views>
+				<results>
+					
+						
+							<result name="commit" do="Category.list" redirect="true" append="" preserveState="false" />
+						
+					
+						
+							<result name="validationError" do="Category.edit" redirect="false" append="categoryId" preserveState="false" />
+						
+					
+				</results>
+			</event-handler>
+		
+		
+		
+			
+			<event-handler name="Category.delete" access="public">
+				<broadcasts>
+					
+						
+							<message name="ModelGlue.genericDelete">
+								
+									<argument name="criteria" value="categoryId" />
+								
+									<argument name="object" value="Category" />
+								
+							</message>
+						
+					
+				</broadcasts>
+				<views>
+					
+				</views>
+				<results>
+					
+						
+							<result name="" do="Category.list" redirect="true" append="" preserveState="false" />
+						
+					
+				</results>
+			</event-handler>
+		
+		
+		
+	</event-handlers>
+</modelglue>
+	
