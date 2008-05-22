@@ -1,0 +1,60 @@
+<beans>
+  <!-- This is your Model-Glue configuration -->
+	<bean id="modelGlueConfiguration" class="modelglue.unity.framework.ModelGlueConfiguration">
+		<!-- Be sure to change reload to false when you go to production! -->
+		<property name="reload"><value>true</value></property>
+		<!-- Rescaffold is overridden by reload - if reload is false, rescaffold's setting doesn't matter -->
+		<property name="rescaffold"><value>true</value></property>
+		<!-- Be sure to change debug to false when you go to production! -->
+		<property name="debug"><value>true</value></property>
+		<property name="defaultEvent"><value>page.index</value></property>
+		<property name="reloadPassword"><value>true</value></property>
+		<property name="viewMappings"><value>/Fortune - ColdSpring/views</value></property>
+		<property name="generatedViewMapping"><value>/Fortune - ColdSpring/views/generated</value></property>
+		<property name="configurationPath"><value>config/ModelGlue.xml</value></property>
+		<property name="scaffoldPath"><value>config/scaffolds/Scaffolds.xml</value></property>
+		<property name="statePrecedence"><value>form</value></property>
+		<property name="reloadKey"><value>init</value></property>
+		<property name="eventValue"><value>event</value></property>
+		<property name="defaultTemplate"><value>index.cfm</value></property>
+		<property name="defaultExceptionHandler"><value>exception</value></property>
+		<property name="defaultCacheTimeout"><value>5</value></property>
+		<property name="defaultScaffolds"><value>list,edit,view,commit,delete</value></property>
+	</bean>
+  
+	<!-- Put definitions for your own beans and services here -->
+	
+	<bean id="Datasource" class="Fortune - ColdSpring.model.Datasource">
+		<constructor-arg name="datasource">
+			<value>Fortune</value>
+		</constructor-arg>
+		<constructor-arg name="username">
+			<value></value>
+		</constructor-arg>
+		<constructor-arg name="password">
+			<value></value>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="CategoryGateway" class="Fortune - ColdSpring.model.CategoryGateway">
+		<constructor-arg name="Datasource">
+			<ref bean="Datasource" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="FortuneDao" class="Fortune - ColdSpring.model.FortuneDao">
+		<constructor-arg name="Datasource">
+			<ref bean="Datasource" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="FortuneService" class="Fortune - ColdSpring.model.FortuneService">
+		<constructor-arg name="CategoryGateway">
+			<ref bean="CategoryGateway" />
+		</constructor-arg>
+		<constructor-arg name="FortuneDao">
+			<ref bean="FortuneDao" />
+		</constructor-arg>
+	</bean>
+	
+</beans>
