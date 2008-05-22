@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<Entry>
+		<entryId>
+			<label>entryId</label>
+			<comment/>
+			<maxlength>0</maxlength>
+			<scale>0</scale>
+			<notProvided>The entryId field is required but was not provided.</notProvided>
+			<invalidType>The entryId field does not contain valid data.  This field must be a numeric value.</invalidType>
+		</entryId>
+		<title>
+			<label>title</label>
+			<comment/>
+			<maxlength>50</maxlength>
+			<scale>0</scale>
+			<notProvided>The title field is required but was not provided.</notProvided>
+			<invalidType>The title field does not contain valid data.  This field must be a string value.</invalidType>
+			<invalidLength>The title field is too long.  This field must be no more than 50 bytes long.</invalidLength>
+		</title>
+		<body>
+			<label>body</label>
+			<comment/>
+			<maxlength>1073741823</maxlength>
+			<scale>0</scale>
+			<notProvided>The body field is required but was not provided.</notProvided>
+			<invalidType>The body field does not contain valid data.  This field must be a string value.</invalidType>
+			<invalidLength>The body field is too long.  This field must be no more than 1073741823 bytes long.</invalidLength>
+		</body>
+		<date>
+			<label>date</label>
+			<comment/>
+			<maxlength>0</maxlength>
+			<scale>0</scale>
+			<notProvided>The date field is required but was not provided.</notProvided>
+			<invalidType>The date field does not contain valid data.  This field must be a date value.</invalidType>
+		</date>
+		<deleted>
+			<label>deleted</label>
+			<comment/>
+			<maxlength>0</maxlength>
+			<scale>0</scale>
+			<notProvided>The deleted field is required but was not provided.</notProvided>
+			<invalidType>The deleted field does not contain valid data.  This field must be a boolean value.</invalidType>
+		</deleted>
+	</Entry>

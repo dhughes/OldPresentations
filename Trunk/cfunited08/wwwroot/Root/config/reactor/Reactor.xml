@@ -1,0 +1,22 @@
+<reactor>
+	<objects>
+		
+		<object name="Entry">
+			<hasMany name="Category">
+				<link name="EntryCategory" />
+			</hasMany>
+		</object>
+		
+		<object name="EntryCategory">
+			<hasOne name="Entry">
+				<relate from="entryId" to="entryId" />
+			</hasOne>
+			<hasOne name="Category">
+				<relate from="categoryId" to="categoryId" />
+			</hasOne>
+		</object>
+		
+		<object name="Category" />
+		
+	</objects>
+</reactor>
