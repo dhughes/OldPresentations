@@ -49,13 +49,6 @@
 	
 	Advanced users who are used to ColdSpring will probably delete this bean in favor of their own approach.
 -->
-<bean id="modelglue.applicationConfiguration" class="ModelGlue.Bean.CommonBeans.SimpleConfig">
-	<property name="config">
-		<map>
-			<entry key="myDatasource"><value>myDatasource</value></entry>
-		</map>
-	</property>
-</bean>
   
 <bean id="DataSource" class="exampleApp.model.Datasource">
 	<property name="datasource">
