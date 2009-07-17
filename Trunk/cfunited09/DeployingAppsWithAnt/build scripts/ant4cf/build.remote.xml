@@ -1,0 +1,57 @@
+<project name="Remote Build Script" default="BuildRemote">
+	
+	<target name="BuildRemote">
+		<!-- any  tasks loaded just use classes from the antlib directory (even ant4cf) -->
+		<taskdef name="configure" classname="com.alagad.ant4cf.Configure" classpath="antlib/ant4cf-java-2.0-SNAPSHOT-jar-with-dependencies.jar" />
+		<taskdef name="service" classname="com.alagad.ant4cf.Service" classpath="antlib/ant4cf-java-2.0-SNAPSHOT-jar-with-dependencies.jar" />
+		<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="antlib/xmltask-v1.15.1.jar" />
+				
+		<property name="webroot" value="c:\webs\www.cfu09ant.com\www\exampleApp" />
+		<property name="config" value="c:\webs\www.cfu09ant.com\www\exampleApp\config" />
+		
+		<configure ant4cfUrl="http://deploy.cfu09ant.com/CFIDE/ant4cf" adminPassword="${cfAdminPassword}" />
+		
+		<!-- get the app -->
+		<echo message="Export App out of SVN" />
+		<exec executable="svn" failifexecutionfails="true">
+			<arg line="export http://svn.alagad.com/presentations/Trunk/cfunited09/DeployingAppsWithAnt/exampleApp/ ${webroot} --username ${svnUsername} --password ${svnPassword} --force" />
+		</exec>
+				
+		<!-- update the configuration -->
+		<echo message="Update the configuration with the correct reload settings" />
+		<xmltask source="${config}/ColdSpring.xml" dest="${config}/ColdSpring.xml">
+			<replace path="//property[@name='reload']/value/text()" withText="false"/>	
+			<replace path="//property[@name='debug']/value/text()" withText="false"/>
+			<replace path="//property[@name='datasource']/value/text()" withText="cfu09ant.com"/>
+		</xmltask>
+		
+		<!-- create the DSN if necessary -->
+		<echo message="create the dsn" />
+		<service component="adminapi.900.datasourceProxy" method="setMSSQL" property="result">
+			<argument name="name" value="cfu09ant.com" />
+			<argument name="host" value="127.0.0.1" />
+			<argument name="database" value="cfu09stub" />
+			<argument name="username" value="sa" />
+			<argument name="password" value="${dsnPassword}" />		
+			<argument name="selectmethod" value="direct" />
+		</service>
+		
+		<!-- clear the trusted cache -->
+		<echo message="clear the trusted cache" />
+		<service component="adminapi.900.runtimeProxy" method="clearTrustedCache" />
+				
+		<!-- turn on trusted cache -->
+		<echo message="turn on trusted cache" />
+		<service component="adminapi.801.runtimeProxy" method="setCacheProperty">
+			<argument name="propertyName" value="TrustedCache" />
+			<argument name="propertyValue" value="true" />
+		</service>
+		
+		<!-- reload the application -->
+		<echo message="reload the application" />
+		<get src="http://deploy.cfu09ant.com/exampleApp?init=true" dest="init.txt"/>
+		<delete file="init.txt" />
+		
+	</target>
+	
+</project>
