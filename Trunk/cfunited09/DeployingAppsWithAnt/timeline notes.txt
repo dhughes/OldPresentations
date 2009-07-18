@@ -40,7 +40,7 @@ When I do the manual publish I'll FTP files to the server (so FTP needs to be en
 					FTP files
 					Reload App
 					
-				Test site and note that it's not chaned!
+				Test site and note that it's not changed!
 				
 				"Remember" clear the template cache.
 				

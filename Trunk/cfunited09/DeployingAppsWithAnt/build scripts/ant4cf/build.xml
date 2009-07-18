@@ -1,4 +1,4 @@
-<project name="SearchMark Build Script" default="Build">
+<project name="Build Script" default="Build">
 	
 	<target name="Build">
 

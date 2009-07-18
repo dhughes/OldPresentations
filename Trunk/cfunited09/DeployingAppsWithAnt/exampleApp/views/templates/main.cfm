@@ -28,7 +28,7 @@
     <div id="header">
 
         <!-- Logotyp -->
-        <h1 id="logo"><a href="./" title="CrystalX [Go to homepage]">My Excellent Website Title<span></span></a></h1>
+        <h1 id="logo"><a href="./" title="CrystalX [Go to homepage]">My Foobared Website Title<span></span></a></h1>
         <hr class="noscreen" />          
 
         <!-- Quick links -->
