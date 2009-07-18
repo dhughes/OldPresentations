@@ -32,6 +32,8 @@
 			<fileset dir="temp"/>
 		</ftp>
 		
+		<delete dir="temp" />
+		
 	</target>
 
 	
