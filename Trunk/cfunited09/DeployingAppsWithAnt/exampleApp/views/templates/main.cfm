@@ -28,7 +28,7 @@
     <div id="header">
 
         <!-- Logotyp -->
-        <h1 id="logo"><a href="./" title="CrystalX [Go to homepage]">My Foobared Website Title<span></span></a></h1>
+        <h1 id="logo"><a href="./" title="CrystalX [Go to homepage]">My Wrong Website Title<span></span></a></h1>
         <hr class="noscreen" />          
 
         <!-- Quick links -->
@@ -102,7 +102,7 @@
                 <h3><span><a href="#">About Me</a></span></h3>
 
                 <div id="about-me">
-                    <p><img src="design/tmp_photo.gif" id="me" alt="Yeah, it«s me!" />
+                    <p><img src="design/tmp_photo.gif" id="me" alt="Yeah, itï¿½s me!" />
                     <strong>John Doe</strong><br />
                     Age: 26<br />
                     Dallas, TX<br />
@@ -169,7 +169,7 @@
         <div id="top" class="noprint"><p><span class="noscreen">Back on top</span> <a href="#header" title="Back on top ^">^<span></span></a></p></div>
         <hr class="noscreen" />
         
-        <p id="createdby">created by <a href="http://www.nuvio.cz">Nuvio | Webdesign</a> <!-- DON«T REMOVE, PLEASE! --></p>
+        <p id="createdby">created by <a href="http://www.nuvio.cz">Nuvio | Webdesign</a> <!-- DONï¿½T REMOVE, PLEASE! --></p>
         <p id="copyright">&copy; 2007 <a href="mailto:my@mail.com">My Name</a></p>
     </div> <!-- /footer -->
 

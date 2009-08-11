@@ -4,9 +4,9 @@ I'm going to have a development site running at http://cfu09ant/exampleApp
 	This will run on my laptop and use a DSN from the virtual server.
 	The DSN name on this will be cfu09example
 	
-I'm going to have a production site running at http://www.example.com/exampleApp
+I'm going to have a production site running at http://www.cfu09ant.com/exampleApp
 	This will run on the virtual server and use a DSN from the virtual server.
-	The DSN name on this will be mysite.com
+	The DSN name on this will be cfu09ant.com  
 	
 When I do the manual publish I'll FTP files to the server (so FTP needs to be enabled)
 	I'll first forget to fix the DSN, and the client will report an error.
@@ -102,3 +102,5 @@ When I do the manual publish I'll FTP files to the server (so FTP needs to be en
 				Q & A
 
 
+
+I need to add some basic info on the syntax of ant files (?)
