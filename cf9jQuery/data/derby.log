@@ -1,0 +1,7 @@
+Apache Derby Network Server - 10.4.2.0 - (689064) started and ready to accept connections on port 1527 at 2009-10-02 12:57:18.026 GMT 
+----------------------------------------------------------------
+2009-10-02 19:34:27.743 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.4.2.0 - (689064): instance a816c00e-0124-1553-5d52-ffffa7200177
+on database directory /Users/scott/Sites/presos/cf9jQuery/data/max09  
+
+Database Class Loader started - derby.database.classpath=''
