@@ -1,0 +1,106 @@
+I'll have someone in the crowd be a virtual customer.  They'll complain about errors.
+
+I'm going to have a development site running at http://cfu09ant/exampleApp
+	This will run on my laptop and use a DSN from the virtual server.
+	The DSN name on this will be cfu09example
+	
+I'm going to have a production site running at http://www.cfu09ant.com/exampleApp
+	This will run on the virtual server and use a DSN from the virtual server.
+	The DSN name on this will be cfu09ant.com  
+	
+When I do the manual publish I'll FTP files to the server (so FTP needs to be enabled)
+	I'll first forget to fix the DSN, and the client will report an error.
+	After I fix that I'll move to another part of my talk and then my "client" will interupt me about
+	all the debugging info I forgot to shut off.
+
+
+
+5/5/55		:	Introductions
+				
+				Introduce myself
+				Introduce Alagad briefly
+				Introduce topic of deployment (moving an application to staging or production)
+				Ask people how they deploy apps
+
+10/15/35	:	Discuss traditional deployment process for ColdFusion
+
+					FTP
+					Copy & Paste over Network
+					shell script to export from SVN
+				
+				Client Calls, needs website title changed.
+					
+					Show my lovely sample app running locally.
+					
+				Change title in eclipse
+				
+				Deploy the app:
+				
+					Export from SVN to local directory
+					FTP files
+					Reload App
+					
+				Test site and note that it's not changed!
+				
+				"Remember" clear the template cache.
+				
+				
+					
+				Test site and note that it's not working! 
+				Note that this is my client being DOWN!
+				Rember the cause as being a differing DSN between dev and production.
+				Fix issue
+				
+					Follow the publication process again, but this time fix the DSN
+					
+				Note that differences between staging and production configuration can also cause headaches
+				Note that this is a totaly manual process.
+				For even a simple deployment this can take several minutes.
+				Imagine deploying to several servers!
+				
+20/35/25	:	Introduce Ant
+				
+				As I move into this slide my cell phone will right with a virtual client.
+				I'll ask everyone to shut off their cell phones before realizing it's mine.
+				I'll look at it and realize it's my customer for this site and answer it.
+				I'll hear the client tell me the website has garbage at the bottom of it.
+				I'll explain to the crowd, and go look at the site and notice the debugging info at the bottom.  
+				This should emphasise how easy it is to overlook things we doing even a moderatly complex deployment.
+
+20/35/25	:	Introduce Ant (for real)
+
+				Apache Ant is a Java-based build tool.
+				Configuration files are written in XML (not too dissimilar to CFML)
+				Ant is extensible and has lots of extensions in the form of custom tasks
+				Ant has lots of build-related features built in:
+					Show list of core tasks
+						Highlight interesting tasks (Tasks for manipulating files and folders, Cvs, Get, Input, Mail, Replace, Sql, Zip, Exec)
+					Show list of optional tasks
+						Hilight FTP
+				Discuss third party ant tasks
+					XmlTask
+				Demonstrate Standard Ant build and deploy with FTP
+	
+5/40/20		:	Ant Shortcommings
+				
+				Discuss short commings of ant
+				Ant tends to be focused on building java apps.  CF Apps are deployed to a server.
+				No way to change server settings (trusted cache, dsn, event gateways, etc)
+				No way to execute CF code
+				No way to run builds on a remote machine
+				
+15/55/5		:	Introduce Ant4CF
+
+				Custom Ant tasks for CF deployment
+				Run build on remote server
+				Execute CF code via servcices
+				Provides services for Admin API
+				Show example build which does everything
+				
+5/60/0 		:	Presentation summary
+				
+				Q & A
+
+
+
+I need to add some basic info on the syntax of ant files (?)

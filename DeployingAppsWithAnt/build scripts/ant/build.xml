@@ -1,0 +1,40 @@
+<project name="Build Script" default="Build">
+	
+	<target name="Build">
+
+		<input message="Please enter SVN username:" addproperty="svnUsername" />
+		<input message="Please enter SVN password:" addproperty="svnPassword" />
+		<input message="Please enter FTP username:" addproperty="ftpUsername" />
+		<input message="Please enter FTP password:" addproperty="ftpPassword" />
+		
+		<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="antlib/xmltask-v1.15.1.jar" />
+		<taskdef name="ftp" classname="org.apache.tools.ant.taskdefs.optional.net.FTP" classpath="antlib/commons-net-1.4.1.jar"/>
+				
+		<!-- export from SVN to a temp directory (SVN is an executable) -->
+		<echo message="Export App out of SVN" />
+		<exec executable="svn" failifexecutionfails="true">
+			<arg line="export http://svn.cfu09ant.com:81/svn/Presentations/Trunk/cfunited09/DeployingAppsWithAnt/exampleApp/ temp --username ${svnUsername} --password ${svnPassword} --force" />
+		</exec>
+		
+		<!-- update the configuration using XmlTask -->
+		<echo message="Update the configuration with the correct reload settings" />
+		<xmltask source="temp/config/ColdSpring.xml" dest="temp/config/ColdSpring.xml">
+			<replace path="//property[@name='reload']/value/text()" withText="false"/>	
+			<replace path="//property[@name='debug']/value/text()" withText="false"/>
+			<replace path="//property[@name='datasource']/value/text()" withText="cfu09ant.com"/>
+		</xmltask>
+		
+		<!-- ftp to the server -->
+		<ftp server="www.cfu09ant.com"
+		    remotedir="www.cfu09ant.com/www/exampleApp"
+		    userid="${ftpUsername}"
+		    password="${ftpPassword}">
+			<fileset dir="temp"/>
+		</ftp>
+		
+		<delete dir="temp" />
+		
+	</target>
+
+	
+</project>
