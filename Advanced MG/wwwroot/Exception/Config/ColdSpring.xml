@@ -1,0 +1,24 @@
+<beans>
+	
+	<bean id="ExceptionService" class="Exception.model.ExceptionService">
+		<property name="debug">
+			<value>false</value>
+		</property>
+	</bean>
+	
+	<bean id="ExceptionEmail" class="Exception.model.Message" singleton="false">
+		<constructor-arg name="bodyTemplateHtml">
+			<value>/Exception/views/emailException.html</value>
+		</constructor-arg>
+		<constructor-arg name="subject">
+			<value>Website Error</value>
+		</constructor-arg>
+		<constructor-arg name="from">
+			<value>support@yourwebsite.com</value>
+		</constructor-arg>
+		<constructor-arg name="to">
+			<value>support@yourwebsite.com</value>
+		</constructor-arg>
+	</bean>
+	
+</beans>

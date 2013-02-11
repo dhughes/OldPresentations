@@ -1,0 +1,42 @@
+<modelglue>
+	
+	<include template="Design/config/ModelGlue.xml" />
+	<include template="Security/config/ModelGlue.xml" />
+	<include template="Exception/config/ModelGlue.xml" />
+	
+	<event-handlers>
+		
+		<event-handler name="Entry.listAll">
+			<broadcasts>
+				<message name="ModelGlue.genericList">
+					<argument name="object" value="Entry" />
+					<argument name="OrderBy" value="date" />
+					<argument name="Ascending" value="false" />
+				</message>
+			</broadcasts>
+			<views>
+				<include name="body" template="dspEntries.cfm">
+					<value name="xe.view" value="Entry.view" />
+				</include>
+			</views>
+		</event-handler>
+		
+		<event-handler name="Entry.detail">
+			<broadcasts>
+				<message name="ModelGlue.genericRead">
+					<argument name="object" value="Entry" />
+					<argument name="criteria" value="entryId" />
+				</message>
+			</broadcasts>
+			<views>
+				<include name="body" template="dspEntry.cfm" />
+			</views>
+		</event-handler>
+		
+		<scaffold object="Entry" type="list,view,edit,commit,delete,rss" />
+		
+		<scaffold object="Category" />
+		
+			
+	</event-handlers>
+</modelglue>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<EntryCategory>
+		<entryCategoryId>
+			<label>entryCategoryId</label>
+			<comment/>
+			<maxlength>0</maxlength>
+			<scale>0</scale>
+			<notProvided>The entryCategoryId field is required but was not provided.</notProvided>
+			<invalidType>The entryCategoryId field does not contain valid data.  This field must be a numeric value.</invalidType>
+		</entryCategoryId>
+		<entryId>
+			<label>entryId</label>
+			<comment/>
+			<maxlength>0</maxlength>
+			<scale>0</scale>
+			<notProvided>The entryId field is required but was not provided.</notProvided>
+			<invalidType>The entryId field does not contain valid data.  This field must be a numeric value.</invalidType>
+		</entryId>
+		<categoryId>
+			<label>categoryId</label>
+			<comment/>
+			<maxlength>0</maxlength>
+			<scale>0</scale>
+			<notProvided>The categoryId field is required but was not provided.</notProvided>
+			<invalidType>The categoryId field does not contain valid data.  This field must be a numeric value.</invalidType>
+		</categoryId>
+	</EntryCategory>

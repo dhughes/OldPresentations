@@ -1,0 +1,38 @@
+<modelglue>
+	<config>
+		<setting name="beanMappings" value="/Exception/config/ColdSpring.xml" />
+		<setting name="viewMappings" value="/Exception/views" />
+	</config>
+
+	<controllers>
+		<controller name="ExceptionController" type="Exception.controller.Controller">
+			<message-listener message="Exception.execptionOccured" function="DoHandleException" />
+		</controller>
+	</controllers>
+	
+	<event-handlers>
+
+		<event-handler name="Exception.exception">
+			<broadcasts>
+				<message name="Exception.execptionOccured" />
+			</broadcasts>
+			<results>
+				<result name="DisplayError" do="Exception.display" />
+				<result name="FriendlyError" do="Exception.freindlyError" />
+			</results>
+		</event-handler>
+
+		<event-handler name="Exception.freindlyError" access="private">
+			<views>
+				<include name="body" template="dspFriendlyMessage.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="Exception.display" access="private">
+			<views>
+				<include name="body" template="dspException.cfm" />
+			</views>
+		</event-handler>
+
+	</event-handlers>
+</modelglue>
